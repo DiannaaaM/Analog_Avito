@@ -22,6 +22,4 @@ public class UserService {
     public void updateUserInfo(Update update){
 
     }
-
-    public
 }
