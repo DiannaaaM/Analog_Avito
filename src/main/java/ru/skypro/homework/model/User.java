@@ -3,8 +3,13 @@ package ru.skypro.homework.model;
 import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Role;
 
-@Component
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String password;

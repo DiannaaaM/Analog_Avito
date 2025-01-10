@@ -2,11 +2,20 @@ package ru.skypro.homework.model;
 
 import org.springframework.stereotype.Component;
 
-@Component
+import javax.persistence.*;
+
+@Entity
+@Table(name = "comments")
 public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String text;
     private Long createdAt;
+    @ManyToOne
     private User author;
+    @OneToOne
+    @JoinColumn(name = "ad_id")
     private Ad ad;
 
     public Comment() {
@@ -49,5 +58,13 @@ public class Comment {
 
     public void setAd(Ad ad) {
         this.ad = ad;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
