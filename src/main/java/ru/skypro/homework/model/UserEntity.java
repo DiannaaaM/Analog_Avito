@@ -1,13 +1,12 @@
 package ru.skypro.homework.model;
 
-import org.springframework.stereotype.Component;
-import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.dto.RoleDTO;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,13 +15,13 @@ public class User {
     private String firstName;
     private String lastName;
     private String phone;
-    private Role role;
+    private RoleDTO role;
     private String image;
 
-    public User() {
+    public UserEntity() {
     }
 
-    public User(String username, String password, String firstName, String lastName, String phone, Role role, String image) {
+    public UserEntity(String username, String password, String firstName, String lastName, String phone, RoleDTO role, String image) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -72,11 +71,11 @@ public class User {
         this.phone = phone;
     }
 
-    public Role getRole() {
+    public RoleDTO getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(RoleDTO role) {
         this.role = role;
     }
 

@@ -2,14 +2,14 @@ package ru.skypro.homework.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.model.Comment;
+import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.model.CommentEntity;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
-    Comment save(CreateOrUpdateComment comment);
-    Comment findById(long id);
-    Comment updateById(CreateOrUpdateComment comment);
-    Comment deleteById(long id);
+public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
+    CommentEntity save(CreateOrUpdateCommentDTO comment);
+    CommentEntity findById(long id);
+    CommentEntity updateById(CreateOrUpdateCommentDTO comment);
+    CommentEntity deleteById(long id);
 
 }

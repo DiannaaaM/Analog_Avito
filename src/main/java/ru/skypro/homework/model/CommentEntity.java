@@ -1,27 +1,25 @@
 package ru.skypro.homework.model;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "comments")
-public class Comment {
+public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
     private Long createdAt;
     @ManyToOne
-    private User author;
+    private UserEntity author;
     @OneToOne
     @JoinColumn(name = "ad_id")
-    private Ad ad;
+    private AdEntity ad;
 
-    public Comment() {
+    public CommentEntity() {
     }
 
-    public Comment(String text, Long createdAt, User author, Ad ad) {
+    public CommentEntity(String text, Long createdAt, UserEntity author, AdEntity ad) {
         this.text = text;
         this.createdAt = createdAt;
         this.author = author;
@@ -44,19 +42,19 @@ public class Comment {
         this.createdAt = createdAt;
     }
 
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 
-    public Ad getAd() {
+    public AdEntity getAd() {
         return ad;
     }
 
-    public void setAd(Ad ad) {
+    public void setAd(AdEntity ad) {
         this.ad = ad;
     }
 

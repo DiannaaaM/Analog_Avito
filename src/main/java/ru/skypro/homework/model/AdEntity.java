@@ -1,12 +1,10 @@
 package ru.skypro.homework.model;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "ads")
-public class Ad {
+public class AdEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,13 +13,13 @@ public class Ad {
     private String photo;
     private Integer price;
     @ManyToOne
-    private User owner;
+    private UserEntity owner;
     private String comments;
 
-    public Ad() {
+    public AdEntity() {
     }
 
-    public Ad(Long id, String title, String description, String photo, Integer price, User owner, String comments) {
+    public AdEntity(Long id, String title, String description, String photo, Integer price, UserEntity owner, String comments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -63,11 +61,11 @@ public class Ad {
         this.photo = photo;
     }
 
-    public User getOwner() {
+    public UserEntity getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserEntity owner) {
         this.owner = owner;
     }
 

@@ -1,10 +1,10 @@
 package ru.skypro.homework.controller;
 
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.CreateOrUpdateAd;
-import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.model.Ad;
-import ru.skypro.homework.model.Comment;
+import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
+import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.model.AdEntity;
+import ru.skypro.homework.model.CommentEntity;
 
 import java.util.List;
 
@@ -12,17 +12,17 @@ import java.util.List;
 @RequestMapping("/ads")
 public class AdsController {
     @GetMapping
-    public List<Ad> getAllAds() {
+    public List<AdEntity> getAllAds() {
         return null;
     }
 
     @PostMapping
-    public Ad createNewAd(@RequestBody CreateOrUpdateAd ad) {
+    public AdEntity createNewAd(@RequestBody CreateOrUpdateAdDTO ad) {
         return null;
     }
 
     @GetMapping("/{id}")
-    public Ad getAdById(@PathVariable long id) {
+    public AdEntity getAdById(@PathVariable long id) {
         return null;
     }
 
@@ -31,22 +31,22 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public Ad updateAd(@PathVariable long id, @RequestBody CreateOrUpdateAd ad) {
+    public AdEntity updateAd(@PathVariable long id, @RequestBody CreateOrUpdateAdDTO ad) {
         return null;
     }
 
     @GetMapping("/me")
-    public List<Ad> getMineAds() {
+    public List<AdEntity> getMineAds() {
         return null;
     }
 
     @GetMapping("/{id}/comments")
-    public List<Comment> getComments(@PathVariable long id) {
+    public List<CommentEntity> getComments(@PathVariable long id) {
         return null;
     }
 
     @PostMapping("/{id}/comments")
-    public void addComment(@PathVariable long id, @RequestBody CreateOrUpdateComment comment) {
+    public void addComment(@PathVariable long id, @RequestBody CreateOrUpdateCommentDTO comment) {
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
@@ -54,6 +54,6 @@ public class AdsController {
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public void updateCommentInfo(@PathVariable long adId, @PathVariable long commentId, @RequestBody CreateOrUpdateComment comment) {
+    public void updateCommentInfo(@PathVariable long adId, @PathVariable long commentId, @RequestBody CreateOrUpdateCommentDTO comment) {
     }
 }

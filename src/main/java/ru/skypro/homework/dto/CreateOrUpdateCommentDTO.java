@@ -1,19 +1,19 @@
 package ru.skypro.homework.dto;
 
-import ru.skypro.homework.model.Ad;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.model.AdEntity;
+import ru.skypro.homework.model.UserEntity;
 
 public class CreateOrUpdateCommentDTO {
     private Long id;
     private String text;
     private Long createdAt;
-    private User author;
-    private Ad ad;
+    private UserEntity author;
+    private AdEntity ad;
 
     public CreateOrUpdateCommentDTO() {
     }
 
-    public CreateOrUpdateCommentDTO(Long id, String text, Long createdAt, User author, Ad ad) {
+    public CreateOrUpdateCommentDTO(Long id, String text, Long createdAt, UserEntity author, AdEntity ad) {
         this.id = id;
         this.text = text;
         this.createdAt = createdAt;
@@ -45,19 +45,19 @@ public class CreateOrUpdateCommentDTO {
         this.createdAt = createdAt;
     }
 
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 
-    public Ad getAd() {
+    public AdEntity getAd() {
         return ad;
     }
 
-    public void setAd(Ad ad) {
+    public void setAd(AdEntity ad) {
         this.ad = ad;
     }
 }

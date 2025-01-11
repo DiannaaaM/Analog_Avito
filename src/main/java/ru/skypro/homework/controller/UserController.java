@@ -2,17 +2,17 @@ package ru.skypro.homework.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.CreateOrUpdateImage;
-import ru.skypro.homework.dto.UpdatePassword;
-import ru.skypro.homework.dto.UpdateUser;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.dto.CreateOrUpdateImageDTO;
+import ru.skypro.homework.dto.UpdatePasswordDTO;
+import ru.skypro.homework.dto.UpdateUserDTO;
+import ru.skypro.homework.model.UserEntity;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @PostMapping("/set_password")
-    public ResponseEntity setPassword(@RequestParam UpdatePassword password) {
+    public ResponseEntity setPassword(@RequestParam UpdatePasswordDTO password) {
         System.out.println( "Придумай пароль, длина которого составляет от 8 до 16 символов" );
         if (password.getNewPassword().length() < 8 || password.getNewPassword().length() > 16) {
             System.out.println( "Пароль не проходит по требованиям. " +
@@ -24,16 +24,16 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public User getUserInfo() {
+    public UserEntity getUserInfo() {
         return null;
     }
 
     @PatchMapping("/me")
-    public void updateUserInfo(@RequestParam UpdateUser updateUser) {
+    public void updateUserInfo(@RequestParam UpdateUserDTO updateUser) {
     }
 
     @PatchMapping("/me/image")
-    public void updateImage(@RequestParam CreateOrUpdateImage image) {
+    public void updateImage(@RequestParam CreateOrUpdateImageDTO image) {
     }
 
 }

@@ -2,16 +2,16 @@ package ru.skypro.homework.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.skypro.homework.dto.CreateOrUpdateImage;
-import ru.skypro.homework.model.User;
+import ru.skypro.homework.dto.CreateOrUpdateImageDTO;
+import ru.skypro.homework.model.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
-    User save(User user);
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+    UserEntity save(UserEntity user);
 
-    User updateUser(User user);
+    UserEntity updateUser(UserEntity user);
 
-    User updateUserImage(CreateOrUpdateImage image);
+    UserEntity updateUserImage(CreateOrUpdateImageDTO image);
 
-    User findByFirstName(String firstName);
+    UserEntity findByFirstName(String firstName);
 }
