@@ -3,17 +3,17 @@ package ru.skypro.homework.dto;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.User;
 
-public class CreateOrUpdateComment {
+public class CreateOrUpdateCommentDTO {
     private Long id;
     private String text;
     private Long createdAt;
     private User author;
     private Ad ad;
 
-    public CreateOrUpdateComment() {
+    public CreateOrUpdateCommentDTO() {
     }
 
-    public CreateOrUpdateComment(Long id, String text, Long createdAt, User author, Ad ad) {
+    public CreateOrUpdateCommentDTO(Long id, String text, Long createdAt, User author, Ad ad) {
         this.id = id;
         this.text = text;
         this.createdAt = createdAt;

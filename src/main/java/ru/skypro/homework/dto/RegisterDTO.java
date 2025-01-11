@@ -3,14 +3,14 @@ package ru.skypro.homework.dto;
 import lombok.Data;
 
 @Data
-public class Register {
+public class RegisterDTO {
 
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private String phone;
-    private Role role;
+    private RoleDTO role;
 
 
     public String getUsername() {
@@ -53,11 +53,11 @@ public class Register {
         this.phone = phone;
     }
 
-    public Role getRole() {
+    public RoleDTO getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(RoleDTO role) {
         this.role = role;
     }
 }

@@ -3,6 +3,6 @@ package ru.skypro.homework.dto;
 import lombok.Data;
 
 @Data
-public class CreateOrUpdateImage {
+public class CreateOrUpdateImageDTO {
     private String pathToImage;
 }
