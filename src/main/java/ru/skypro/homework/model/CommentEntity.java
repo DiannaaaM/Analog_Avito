@@ -26,6 +26,7 @@ public class CommentEntity {
         this.ad = ad;
     }
 
+
     public String getText() {
         return text;
     }

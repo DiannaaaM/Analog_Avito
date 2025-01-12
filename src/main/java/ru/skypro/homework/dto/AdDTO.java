@@ -1,36 +1,33 @@
-package ru.skypro.homework.model;
+package ru.skypro.homework.dto;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "ads")
-public class AdEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AdDTO {
     private Long id;
     private String title;
     private String description;
     private String photo;
     private Integer price;
-    @ManyToOne
-    private UserEntity owner;
+    private Long ownerId; // Ссылка на идентификатор владельца
     private String comments;
 
-    public AdEntity() {
+    public AdDTO() {
     }
 
-    public AdEntity(Long id, String title, String description, String photo, Integer price, UserEntity owner, String comments) {
+    public AdDTO(Long id, String title, String description, String photo, Integer price, Long ownerId, String comments) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.photo = photo;
         this.price = price;
-        this.owner = owner;
+        this.ownerId = ownerId;
         this.comments = comments;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -53,6 +50,10 @@ public class AdEntity {
         return photo;
     }
 
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public Integer getPrice() {
         return price;
     }
@@ -61,16 +62,12 @@ public class AdEntity {
         this.price = price;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public UserEntity getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserEntity owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getComments() {

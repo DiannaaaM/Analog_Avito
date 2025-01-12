@@ -1,15 +1,20 @@
 package ru.skypro.homework.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.CreateOrUpdateImageDTO;
 import ru.skypro.homework.dto.UpdatePasswordDTO;
-import ru.skypro.homework.dto.UpdateUserDTO;
+import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.model.UserEntity;
+import ru.skypro.homework.service.UserService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/set_password")
     public ResponseEntity setPassword(@RequestParam UpdatePasswordDTO password) {
@@ -29,11 +34,13 @@ public class UserController {
     }
 
     @PatchMapping("/me")
-    public void updateUserInfo(@RequestParam UpdateUserDTO updateUser) {
+    public long updateUserInfo(@RequestParam UserDTO updateUser) {
+        return userService.updateUserInfo(updateUser);
     }
 
     @PatchMapping("/me/image")
-    public void updateImage(@RequestParam CreateOrUpdateImageDTO image) {
+    public long updateImage(@RequestParam CreateOrUpdateImageDTO image) {
+        return userService.updateUserImage(image);
     }
 
 }

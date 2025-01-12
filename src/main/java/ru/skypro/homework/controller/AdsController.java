@@ -1,59 +1,87 @@
 package ru.skypro.homework.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.CreateOrUpdateAdDTO;
-import ru.skypro.homework.dto.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.dto.AdDTO;
+import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.CommentEntity;
+import ru.skypro.homework.model.UserEntity;
+import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.UserService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/ads")
 public class AdsController {
+    @Autowired
+    private AdService adService;
+
+    @Autowired
+    private CommentService commentService;
+
+    private long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            UserEntity user = (UserEntity) authentication.getPrincipal();
+            return user.getId();
+        }
+        throw new RuntimeException("User not found");
+    }
+
+
     @GetMapping
     public List<AdEntity> getAllAds() {
-        return null;
+        return adService.findAllAds();
     }
 
     @PostMapping
-    public AdEntity createNewAd(@RequestBody CreateOrUpdateAdDTO ad) {
-        return null;
+    public long createNewAd(@RequestBody AdDTO ad) {
+        return adService.createAd(ad);
     }
 
     @GetMapping("/{id}")
-    public AdEntity getAdById(@PathVariable long id) {
-        return null;
+    public AdDTO getAdById(@PathVariable long id) {
+        return adService.getAd(id);
     }
 
     @DeleteMapping("/{id}")
     public void deleteAd(@PathVariable long id) {
+        adService.deleteAd(id);
     }
 
     @PatchMapping("/{id}")
-    public AdEntity updateAd(@PathVariable long id, @RequestBody CreateOrUpdateAdDTO ad) {
-        return null;
+    public AdDTO updateAd(@PathVariable long id, @RequestBody AdDTO ad) {
+        return adService.updateInfoAd(id, ad);
     }
 
     @GetMapping("/me")
     public List<AdEntity> getMineAds() {
-        return null;
+        long userId = getCurrentUserId();
+        return adService.findAdsOfUser(userId);
     }
 
     @GetMapping("/{id}/comments")
     public List<CommentEntity> getComments(@PathVariable long id) {
-        return null;
+        return commentService.showCommentToAd(id);
     }
 
     @PostMapping("/{id}/comments")
-    public void addComment(@PathVariable long id, @RequestBody CreateOrUpdateCommentDTO comment) {
+    public long addComment(@PathVariable long id, @RequestBody CommentDTO comment) {
+        return commentService.newComment(id, comment);
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     public void deleteComment(@PathVariable long adId, @PathVariable long commentId) {
+        commentService.deleteComm(adId, commentId);
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public void updateCommentInfo(@PathVariable long adId, @PathVariable long commentId, @RequestBody CreateOrUpdateCommentDTO comment) {
+    public void updateCommentInfo(@PathVariable long adId, @PathVariable long commentId, @RequestBody CommentDTO comment) {
+        commentService.updateCommentInfo(adId, commentId, comment);
     }
 }

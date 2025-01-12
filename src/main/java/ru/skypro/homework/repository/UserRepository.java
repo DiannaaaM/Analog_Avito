@@ -14,4 +14,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity updateUserImage(CreateOrUpdateImageDTO image);
 
     UserEntity findByFirstName(String firstName);
+
+    boolean existsById(long id);
+
+    UserEntity findById(long id);
 }
