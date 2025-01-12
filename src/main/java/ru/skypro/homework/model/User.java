@@ -1,17 +1,36 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.model;
 
-import lombok.Data;
+import org.springframework.stereotype.Component;
+import ru.skypro.homework.dto.Role;
 
-@Data
-public class Register {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private String phone;
     private Role role;
+    private String image;
 
+    public User() {
+    }
+
+    public User(String username, String password, String firstName, String lastName, String phone, Role role, String image) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.role = role;
+        this.image = image;
+    }
 
     public String getUsername() {
         return username;
@@ -59,5 +78,13 @@ public class Register {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
