@@ -6,7 +6,7 @@ public class AdDTO {
     private String description;
     private String photo;
     private Integer price;
-    private Long ownerId; // Ссылка на идентификатор владельца
+    private Long ownerId;
     private String comments;
 
     public AdDTO() {
