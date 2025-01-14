@@ -1,18 +1,20 @@
 package ru.skypro.homework.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class UserDTO {
     private Long id;
     private String username;
     private String firstName;
     private String lastName;
     private String phone;
-    private String role; // Изменим на String для простоты (или используйте enum)
-    private String image;
+    private RoleDTO role;
+    private MultipartFile image;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String username, String firstName, String lastName, String phone, String role, String image) {
+    public UserDTO(Long id, String username, String firstName, String lastName, String phone, RoleDTO role, MultipartFile image) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -62,19 +64,19 @@ public class UserDTO {
         this.phone = phone;
     }
 
-    public String getRole() {
+    public RoleDTO getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleDTO role) {
         this.role = role;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 }

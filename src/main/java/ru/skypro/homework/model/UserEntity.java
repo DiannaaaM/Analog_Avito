@@ -1,5 +1,6 @@
 package ru.skypro.homework.model;
 
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.RoleDTO;
 
 import javax.persistence.*;
@@ -16,12 +17,12 @@ public class UserEntity {
     private String lastName;
     private String phone;
     private RoleDTO role;
-    private String image;
+    private MultipartFile image;
 
     public UserEntity() {
     }
 
-    public UserEntity(String username, String password, String firstName, String lastName, String phone, RoleDTO role, String image) {
+    public UserEntity(String username, String password, String firstName, String lastName, String phone, RoleDTO role, MultipartFile image) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -83,11 +84,11 @@ public class UserEntity {
         this.role = role;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 }

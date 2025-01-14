@@ -1,16 +1,17 @@
 package ru.skypro.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.CreateOrUpdateImageDTO;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.RegisterDTO;
 import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.mapper.EntityMapper;
-import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
-import java.util.List;
+import java.io.IOException;
 
 @Service
 public class UserService {
@@ -19,6 +20,10 @@ public class UserService {
 
     @Autowired
     private EntityMapper mapper;
+
+    public Authentication authentication(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
 
     public UserEntity registration(RegisterDTO register) {
         UserEntity user = new UserEntity();
@@ -31,6 +36,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public UserEntity getCurrentUser() {
+        String currentUsername = authentication().getName();
+        return userRepository.findByUsername(currentUsername);
+    }
+
     public long updateUserInfo(UserDTO update) {
         UserEntity userEntity = mapper.userDTOToUserEntity(update);
         UserEntity updatedUser = userRepository.findByFirstName(userEntity.getFirstName());
@@ -38,14 +48,21 @@ public class UserService {
         return updatedUser.getId();
     }
 
-    public long updateUserImage(CreateOrUpdateImageDTO image) {
-        UserEntity user = userRepository.findById(image.getUserId());
+    public long updateUserImage(MultipartFile image) {
+        UserEntity user = userRepository.findByFirstName(authentication().getName());
 
-        user.setImage(image.getImageUrl());
+        user.setImage(image);
 
         userRepository.save(user);
 
         return user.getId();
+    }
+
+    public void uploadImage(Long userId, MultipartFile imageFile) throws IOException {
+        UserEntity user = userRepository.findById(userId);
+
+        user.setImage(imageFile);
+        userRepository.save(user);
     }
 
 }
