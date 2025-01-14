@@ -1,22 +1,30 @@
 package ru.skypro.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.repository.AdRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-
 
 @Service
 public class AdService {
     @Autowired
     private AdRepository adRepository;
+
     @Autowired
     private EntityMapper mapper;
 
+    @Value("${upload.path}")
+    private String uploadPath;
 
     public AdDTO getAd(Long id) {
         AdEntity adEntity = adRepository.findById(id);
@@ -26,7 +34,6 @@ public class AdService {
     public long createAd(AdDTO adDTO) {
         AdEntity adEntity = mapper.adDTOToAdEntity(adDTO);
         AdEntity savedAd = adRepository.save(adEntity);
-        mapper.adEntityToAdDTO(savedAd);
         return savedAd.getId();
     }
 
@@ -36,8 +43,11 @@ public class AdService {
         existingAd.setTitle(ad.getTitle());
         existingAd.setDescription(ad.getDescription());
         existingAd.setPrice(ad.getPrice());
-        existingAd.setPhoto(ad.getPhoto());
         existingAd.setComments(ad.getComments());
+
+        if (ad.getPhoto() != null && !ad.getPhoto().isEmpty()) {
+            existingAd.setPhoto(uploadImage(ad.getPhoto()));
+        }
 
         AdEntity updatedAd = adRepository.save(existingAd);
         return mapper.adEntityToAdDTO(updatedAd);
@@ -49,10 +59,25 @@ public class AdService {
         }
         adRepository.deleteById(id);
     }
-    public List<AdEntity> findAllAds(){
+
+    public List<AdEntity> findAllAds() {
         return adRepository.findAll();
     }
-    public List<AdEntity> findAdsOfUser(long id){
+
+    public List<AdEntity> findAdsOfUser(long id) {
         return adRepository.findByOwnerId(id);
+    }
+
+    private String uploadImage(MultipartFile imageFile) {
+        try {
+            String imagePath = uploadPath + "/" + imageFile.getOriginalFilename();
+            Path path = Paths.get(imagePath);
+
+            Files.copy(imageFile.getInputStream(), path);
+
+            return imagePath;
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image: " + e.getMessage());
+        }
     }
 }

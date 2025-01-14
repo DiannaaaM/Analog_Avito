@@ -1,10 +1,12 @@
 package ru.skypro.homework.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class AdDTO {
     private Long id;
     private String title;
     private String description;
-    private String photo;
+    private MultipartFile photo;
     private Integer price;
     private Long ownerId;
     private String comments;
@@ -12,7 +14,7 @@ public class AdDTO {
     public AdDTO() {
     }
 
-    public AdDTO(Long id, String title, String description, String photo, Integer price, Long ownerId, String comments) {
+    public AdDTO(Long id, String title, String description, MultipartFile photo, Integer price, Long ownerId, String comments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -46,11 +48,11 @@ public class AdDTO {
         this.description = description;
     }
 
-    public String getPhoto() {
+    public MultipartFile getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(MultipartFile photo) {
         this.photo = photo;
     }
 
