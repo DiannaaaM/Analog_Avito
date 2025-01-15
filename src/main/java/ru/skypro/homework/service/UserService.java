@@ -21,7 +21,7 @@ public class UserService {
     @Autowired
     private EntityMapper mapper;
 
-    public Authentication authentication(){
+    public Authentication authentication() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
@@ -42,27 +42,19 @@ public class UserService {
     }
 
     public long updateUserInfo(UserDTO update) {
-        UserEntity userEntity = mapper.userDTOToUserEntity(update);
-        UserEntity updatedUser = userRepository.findByFirstName(userEntity.getFirstName());
-        mapper.userEntityToUserDTO(userRepository.updateUser(updatedUser));
+        UserEntity updatedUser = userRepository.findByUsername(authentication().getName());
+        if (updatedUser == null) {
+            throw new RuntimeException("User not found");
+        }
+        // Обновите поля пользователя
+        updatedUser.setFirstName(update.getFirstName());
+        updatedUser.setLastName(update.getLastName());
+        updatedUser.setPhone(update.getPhone());
+        // Обновите изображение, если есть
+        if (update.getImage() != null) {
+            updatedUser.setImage(update.getImage());
+        }
+        userRepository.save(updatedUser);
         return updatedUser.getId();
     }
-
-    public long updateUserImage(MultipartFile image) {
-        UserEntity user = userRepository.findByFirstName(authentication().getName());
-
-        user.setImage(image);
-
-        userRepository.save(user);
-
-        return user.getId();
-    }
-
-    public void uploadImage(Long userId, MultipartFile imageFile) throws IOException {
-        UserEntity user = userRepository.findById(userId);
-
-        user.setImage(imageFile);
-        userRepository.save(user);
-    }
-
 }
