@@ -50,7 +50,6 @@ public class AdService {
         existingAd.setPrice(ad.getPrice());
         existingAd.setComments(ad.getComments());
 
-        // Обработка изображения
         if (ad.getPhoto() != null && !ad.getPhoto().isEmpty()) {
             existingAd.setPhoto(uploadImage(ad.getPhoto()));
         }

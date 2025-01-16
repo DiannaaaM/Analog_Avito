@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.RegisterDTO;
 import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
-import java.io.IOException;
 
 @Service
 public class UserService {
