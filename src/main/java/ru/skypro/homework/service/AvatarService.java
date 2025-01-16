@@ -24,21 +24,18 @@ public class AvatarService {
     private AvatarRepository avatarRepository;
 
     public AvatarEntity uploadImage(MultipartFile file) throws IOException {
-        // Готовим уникальное имя для файла
         String uuid = UUID.randomUUID().toString();
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         String fileName = uuid + extension;
         Path filePath = Paths.get(uploadPath, fileName);
-
         Files.createDirectories(filePath.getParent());
-
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        AvatarEntity image = new AvatarEntity();
-        image.setName(fileName);
-        image.setPath(filePath.toString());
-        image.setData(file.getBytes());
-        return avatarRepository.save(image);
+        AvatarEntity avatar = new AvatarEntity();
+        avatar.setName(fileName);
+        avatar.setPath(filePath.toString());
+        avatar.setData(file.getBytes());
+        return avatarRepository.save(avatar);
     }
 
     public byte[] getImageData(Long id) {
@@ -55,7 +52,7 @@ public class AvatarService {
         return null;
     }
 
-    public List<AvatarEntity> getAllAvatars(Integer pageNumber, Integer pageSize) {
-        return avatarRepository.findAllByOrderByNameAsc();
+    public List<AvatarEntity> getImagesByAdId(Long id) {
+        return  avatarRepository.getImagesByAdId( id );
     }
 }

@@ -1,8 +1,7 @@
 package ru.skypro.homework.model;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "ads")
@@ -12,7 +11,7 @@ public class AdEntity {
     private Long id;
     private String title;
     private String description;
-    private MultipartFile photo;
+    private String photo;
     private Integer price;
     @ManyToOne
     private UserEntity owner;
@@ -21,7 +20,7 @@ public class AdEntity {
     public AdEntity() {
     }
 
-    public AdEntity(Long id, String title, String description, MultipartFile photo, Integer price, UserEntity owner, String comments) {
+    public AdEntity(Long id, String title, String description, String photo, Integer price, UserEntity owner, String comments) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -51,7 +50,7 @@ public class AdEntity {
         this.description = description;
     }
 
-    public MultipartFile getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
@@ -81,5 +80,9 @@ public class AdEntity {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public <E> List getImages() {
+        return null;
     }
 }

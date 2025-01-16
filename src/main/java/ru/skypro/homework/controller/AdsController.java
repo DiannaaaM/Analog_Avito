@@ -7,12 +7,17 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.model.AdEntity;
+import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.CommentEntity;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
-import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.AvatarService;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,6 +29,9 @@ public class AdsController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private AvatarService avatarService;
+
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
@@ -32,7 +40,6 @@ public class AdsController {
         }
         throw new RuntimeException("User not found");
     }
-
 
     @GetMapping
     public List<AdEntity> getAllAds() {
@@ -83,5 +90,21 @@ public class AdsController {
     @PatchMapping("/{adId}/comments/{commentId}")
     public void updateCommentInfo(@PathVariable long adId, @PathVariable long commentId, @RequestBody CommentDTO comment) {
         commentService.updateCommentInfo(adId, commentId, comment);
+    }
+
+    @PostMapping("/{adId}/images")
+    public ResponseEntity<Long> uploadImage(@PathVariable Long adId, @RequestParam("imageFile") MultipartFile imageFile) {
+        try {
+            AvatarEntity avatarEntity = avatarService.uploadImage(imageFile);
+            adService.addImageToAd(adId, avatarEntity);
+            return ResponseEntity.ok(avatarEntity.getId());
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/{id}/images")
+    public List<AvatarEntity> getAdImages(@PathVariable Long id) {
+        return avatarService.getImagesByAdId(id);
     }
 }

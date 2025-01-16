@@ -7,7 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.AdEntity;
+import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.repository.AdRepository;
+import ru.skypro.homework.repository.AvatarRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +24,9 @@ public class AdService {
 
     @Autowired
     private EntityMapper mapper;
+
+    @Autowired
+    private AvatarRepository avatarRepository;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -45,6 +50,7 @@ public class AdService {
         existingAd.setPrice(ad.getPrice());
         existingAd.setComments(ad.getComments());
 
+        // Обработка изображения
         if (ad.getPhoto() != null && !ad.getPhoto().isEmpty()) {
             existingAd.setPhoto(uploadImage(ad.getPhoto()));
         }
@@ -78,6 +84,25 @@ public class AdService {
             return imagePath;
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload image: " + e.getMessage());
+        }
+    }
+
+    public void addImageToAd(Long adId, AvatarEntity avatarEntity) {
+        AdEntity ad = adRepository.findById(adId);
+        if (ad != null) {
+            ad.getImages().add(avatarEntity);
+            adRepository.save(ad);
+        } else {
+            throw new RuntimeException("Ad not found with id: " + adId);
+        }
+    }
+
+    public List<AvatarEntity> getImagesByAdId(Long adId) {
+        AdEntity ad = adRepository.findById(adId);
+        if (ad != null) {
+            return ad.getImages();
+        } else {
+            throw new RuntimeException("Ad not found with id: " + adId);
         }
     }
 }

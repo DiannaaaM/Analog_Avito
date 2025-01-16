@@ -24,11 +24,16 @@ public class AvatarEntity implements Serializable {
     @Setter
     private String path;
 
-    @OneToOne
-    private UserEntity user;
-
     @Lob
     @Getter
     @Setter
     private byte[] data;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "ad_id")
+    private AdEntity ad;
 }
