@@ -7,15 +7,16 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.AdEntity;
-import ru.skypro.homework.model.AvatarEntity;
+import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.repository.AdRepository;
-import ru.skypro.homework.repository.AvatarRepository;
+import ru.skypro.homework.repository.ImageRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdService {
@@ -26,7 +27,7 @@ public class AdService {
     private EntityMapper mapper;
 
     @Autowired
-    private AvatarRepository avatarRepository;
+    private ImageRepository imageRepository;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -42,7 +43,7 @@ public class AdService {
         return savedAd.getId();
     }
 
-    public AdDTO updateInfoAd(long id, AdDTO ad) {
+    public AdDTO updateInfoAd(long id, AdDTO ad) throws IOException {
         AdEntity existingAd = adRepository.findById(id);
 
         existingAd.setTitle(ad.getTitle());
@@ -50,9 +51,10 @@ public class AdService {
         existingAd.setPrice(ad.getPrice());
         existingAd.setComments(ad.getComments());
 
-        // Обработка изображения
         if (ad.getPhoto() != null && !ad.getPhoto().isEmpty()) {
-            existingAd.setPhoto(uploadImage(ad.getPhoto()));
+            ImageEntity imageEntity = new ImageEntity();
+            imageEntity.setImagePath(uploadImage(ad.getPhoto()));
+            existingAd.getImages().add(imageEntity);
         }
 
         AdEntity updatedAd = adRepository.save(existingAd);
@@ -74,35 +76,27 @@ public class AdService {
         return adRepository.findByOwnerId(id);
     }
 
-    private String uploadImage(MultipartFile imageFile) {
-        try {
-            String imagePath = uploadPath + "/" + imageFile.getOriginalFilename();
-            Path path = Paths.get(imagePath);
+    private String uploadImage(MultipartFile imageFile) throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        String extension = imageFile.getOriginalFilename().substring(imageFile.getOriginalFilename().lastIndexOf("."));
+        String imagePath = uploadPath + "/" + uuid + extension;
+        Path path = Paths.get(imagePath);
 
-            Files.copy(imageFile.getInputStream(), path);
+        Files.createDirectories(path.getParent());
+        Files.copy(imageFile.getInputStream(), path);
 
-            return imagePath;
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to upload image: " + e.getMessage());
-        }
+        return imagePath;
     }
 
-    public void addImageToAd(Long adId, AvatarEntity avatarEntity) {
+    public void addImageToAd(Long adId, ImageEntity imageEntity) {
         AdEntity ad = adRepository.findById(adId);
-        if (ad != null) {
-            ad.getImages().add(avatarEntity);
-            adRepository.save(ad);
-        } else {
-            throw new RuntimeException("Ad not found with id: " + adId);
-        }
-    }
 
-    public List<AvatarEntity> getImagesByAdId(Long adId) {
-        AdEntity ad = adRepository.findById(adId);
-        if (ad != null) {
-            return ad.getImages();
-        } else {
-            throw new RuntimeException("Ad not found with id: " + adId);
-        }
+        imageEntity.setAd(ad);
+
+        ImageEntity savedImage = imageRepository.save(imageEntity);
+
+        ad.getImages().add(savedImage);
+
+        adRepository.save(ad);
     }
 }

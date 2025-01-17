@@ -6,13 +6,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.CommentDTO;
-import ru.skypro.homework.model.AdEntity;
-import ru.skypro.homework.model.AvatarEntity;
-import ru.skypro.homework.model.CommentEntity;
-import ru.skypro.homework.model.UserEntity;
+import ru.skypro.homework.model.*;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
-import ru.skypro.homework.service.AvatarService;
+import ru.skypro.homework.repository.ImageRepository;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +27,7 @@ public class AdsController {
     private CommentService commentService;
 
     @Autowired
-    private AvatarService avatarService;
+    private ImageRepository imageRepository;
 
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,7 +59,7 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public AdDTO updateAd(@PathVariable long id, @RequestBody AdDTO ad) {
+    public AdDTO updateAd(@PathVariable long id, @RequestBody AdDTO ad) throws IOException {
         return adService.updateInfoAd(id, ad);
     }
 
@@ -94,17 +91,13 @@ public class AdsController {
 
     @PostMapping("/{adId}/images")
     public ResponseEntity<Long> uploadImage(@PathVariable Long adId, @RequestParam("imageFile") MultipartFile imageFile) {
-        try {
-            AvatarEntity avatarEntity = avatarService.uploadImage(imageFile);
-            adService.addImageToAd(adId, avatarEntity);
-            return ResponseEntity.ok(avatarEntity.getId());
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body(null);
-        }
+        ImageEntity imageEntity = imageRepository.uploadImage(imageFile);
+        adService.addImageToAd(adId, imageEntity);
+        return ResponseEntity.ok(imageEntity.getId());
     }
 
     @GetMapping("/{id}/images")
-    public List<AvatarEntity> getAdImages(@PathVariable Long id) {
-        return avatarService.getImagesByAdId(id);
+    public List<ImageEntity> getAdImages(@PathVariable Long id) {
+        return imageRepository.getImagesByAdId(id);
     }
 }

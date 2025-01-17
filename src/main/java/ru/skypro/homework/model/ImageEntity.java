@@ -3,8 +3,8 @@ package ru.skypro.homework.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "avatars")
-public class AvatarEntity {
+@Table(name = "images")
+public class ImageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +12,9 @@ public class AvatarEntity {
 
     private String imagePath;
 
-    @OneToOne(mappedBy = "avatar", cascade = CascadeType.ALL)
-    private UserEntity user;
+    @ManyToOne
+    @JoinColumn(name = "ad_id", nullable = false)
+    private AdEntity ad;
 
     public Long getId() {
         return id;
@@ -31,11 +32,11 @@ public class AvatarEntity {
         this.imagePath = imagePath;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public AdEntity getAd() {
+        return ad;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setAd(AdEntity ad) {
+        this.ad = ad;
     }
 }
