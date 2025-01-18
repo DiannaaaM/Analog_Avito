@@ -1,35 +1,35 @@
-package ru.skypro.homework.model;
+package ru.skypro.homework.dto;
 
-import org.springframework.stereotype.Component;
-import ru.skypro.homework.dto.Role;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Long id;
     private String username;
-    private String password;
     private String firstName;
     private String lastName;
     private String phone;
-    private Role role;
-    private String image;
+    private RoleDTO role;
+    private MultipartFile image;
 
-    public User() {
+    public UserDTO() {
     }
 
-    public User(String username, String password, String firstName, String lastName, String phone, Role role, String image) {
+    public UserDTO(Long id, String username, String firstName, String lastName, String phone, RoleDTO role, MultipartFile image) {
+        this.id = id;
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.role = role;
         this.image = image;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -38,14 +38,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -72,19 +64,19 @@ public class User {
         this.phone = phone;
     }
 
-    public Role getRole() {
+    public RoleDTO getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(RoleDTO role) {
         this.role = role;
     }
 
-    public String getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 }

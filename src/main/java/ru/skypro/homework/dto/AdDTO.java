@@ -1,34 +1,35 @@
-package ru.skypro.homework.model;
+package ru.skypro.homework.dto;
 
-import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "ads")
-public class Ad {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AdDTO {
     private Long id;
     private String title;
     private String description;
-    private String photo;
+    private MultipartFile photo;
     private Integer price;
-    @ManyToOne
-    private User owner;
+    private Long ownerId;
     private String comments;
 
-    public Ad() {
+    public AdDTO() {
     }
 
-    public Ad(Long id, String title, String description, String photo, Integer price, User owner, String comments) {
+    public AdDTO(Long id, String title, String description, MultipartFile photo, Integer price, Long ownerId, String comments) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.photo = photo;
         this.price = price;
-        this.owner = owner;
+        this.ownerId = ownerId;
         this.comments = comments;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -47,8 +48,12 @@ public class Ad {
         this.description = description;
     }
 
-    public String getPhoto() {
+    public MultipartFile getPhoto() {
         return photo;
+    }
+
+    public void setPhoto(MultipartFile photo) {
+        this.photo = photo;
     }
 
     public Integer getPrice() {
@@ -59,16 +64,12 @@ public class Ad {
         this.price = price;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
     public String getComments() {

@@ -1,0 +1,20 @@
+package ru.skypro.homework.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import ru.skypro.homework.model.AdEntity;
+import ru.skypro.homework.model.AdEntity;
+
+import java.util.List;
+
+@Repository
+public interface AdRepository extends JpaRepository<AdEntity, Integer> {
+    AdEntity findById(Long id);
+
+    boolean existsById(Long id);
+
+    void deleteById(Long id);
+
+    List<AdEntity> findByOwnerId(long id);
+}
+
