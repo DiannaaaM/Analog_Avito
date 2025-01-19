@@ -37,10 +37,10 @@ public class AdService {
         return mapper.adEntityToAdDTO(adEntity);
     }
 
-    public long createAd(AdDTO adDTO) {
+    public AdDTO createAd(AdDTO adDTO) {
         AdEntity adEntity = mapper.adDTOToAdEntity(adDTO);
         AdEntity savedAd = adRepository.save(adEntity);
-        return savedAd.getId();
+        return mapper.adEntityToAdDTO(savedAd);
     }
 
     public AdDTO updateInfoAd(long id, AdDTO ad) throws IOException {
@@ -68,12 +68,14 @@ public class AdService {
         adRepository.deleteById(id);
     }
 
-    public List<AdEntity> findAllAds() {
-        return adRepository.findAll();
+    public List<AdDTO> findAllAds() {
+        List<AdEntity> adEntities = adRepository.findAll();
+        return mapper.adEntitiesToAdDTOs(adEntities);
     }
 
-    public List<AdEntity> findAdsOfUser(long id) {
-        return adRepository.findByOwnerId(id);
+    public List<AdDTO> findAdsOfUser(long id) {
+        List<AdEntity> adEntities = adRepository.findByOwnerId(id);
+        return mapper.adEntitiesToAdDTOs(adEntities);
     }
 
     private String uploadImage(MultipartFile imageFile) throws IOException {

@@ -6,13 +6,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.CommentDTO;
+import ru.skypro.homework.dto.ImageDTO;
 import ru.skypro.homework.model.*;
+import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
-import ru.skypro.homework.repository.ImageRepository;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.service.ImageService;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +29,9 @@ public class AdsController {
     private CommentService commentService;
 
     @Autowired
+    private ImageService imageService;
+
+    @Autowired
     private ImageRepository imageRepository;
 
     private long getCurrentUserId() {
@@ -39,12 +44,12 @@ public class AdsController {
     }
 
     @GetMapping
-    public List<AdEntity> getAllAds() {
+    public List<AdDTO> getAllAds() {
         return adService.findAllAds();
     }
 
     @PostMapping
-    public long createNewAd(@RequestBody AdDTO ad) {
+    public AdDTO createNewAd(@RequestBody AdDTO ad) {
         return adService.createAd(ad);
     }
 
@@ -64,13 +69,13 @@ public class AdsController {
     }
 
     @GetMapping("/me")
-    public List<AdEntity> getMineAds() {
+    public List<AdDTO> getMineAds() {
         long userId = getCurrentUserId();
         return adService.findAdsOfUser(userId);
     }
 
     @GetMapping("/{id}/comments")
-    public List<CommentEntity> getComments(@PathVariable long id) {
+    public List<CommentDTO> getComments(@PathVariable long id) {
         return commentService.showCommentToAd(id);
     }
 
@@ -97,7 +102,7 @@ public class AdsController {
     }
 
     @GetMapping("/{id}/images")
-    public List<ImageEntity> getAdImages(@PathVariable Long id) {
-        return imageRepository.getImagesByAdId(id);
+    public List<ImageDTO> getAdImages(@PathVariable Long id) {
+        return imageService.getAdImages(id);
     }
 }

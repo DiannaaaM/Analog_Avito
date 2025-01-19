@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.ImageDTO;
+import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.repository.ImageRepository;
 
@@ -12,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,7 +26,10 @@ public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public ImageEntity uploadImage(MultipartFile file) throws IOException {
+    @Autowired
+    private EntityMapper mapper;
+
+    public ImageDTO uploadImage(MultipartFile file) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         String fileName = uuid + extension;
@@ -34,7 +40,7 @@ public class ImageService {
 
         ImageEntity image = new ImageEntity();
         image.setImagePath(filePath.toString());
-        return imageRepository.save(image);
+        return mapper.imageEntityToImageDTO(imageRepository.save(image));
     }
 
     public byte[] getImageDataFromPath(Long id) throws IOException {
@@ -54,5 +60,9 @@ public class ImageService {
         } catch (IOException e) {
             throw new RuntimeException("Failed to delete image: " + e.getMessage());
         }
+    }
+
+    public List<ImageDTO> getAdImages(Long id) {
+        return mapper.imageEntitiesToImageDTOs(imageRepository.getImagesByAdId(id));
     }
 }

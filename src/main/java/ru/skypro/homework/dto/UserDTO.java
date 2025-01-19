@@ -72,11 +72,11 @@ public class UserDTO {
         this.role = role;
     }
 
-    public MultipartFile getImage() {
+    public MultipartFile getAvatar() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setAvatar(MultipartFile image) {
         this.image = image;
     }
 }
