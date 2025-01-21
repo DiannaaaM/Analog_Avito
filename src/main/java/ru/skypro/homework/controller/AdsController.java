@@ -1,38 +1,33 @@
 package ru.skypro.homework.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.dto.CommentDTO;
-import ru.skypro.homework.dto.ImageDTO;
-import ru.skypro.homework.model.*;
-import ru.skypro.homework.repository.ImageRepository;
+import ru.skypro.homework.model.AdEntity;
+import ru.skypro.homework.model.CommentEntity;
+import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.service.ImageService;
 
 import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/ads")
+@Api(tags = "Advertisement Management")
 public class AdsController {
     @Autowired
     private AdService adService;
 
     @Autowired
     private CommentService commentService;
-
-    @Autowired
-    private ImageService imageService;
-
-    @Autowired
-    private ImageRepository imageRepository;
 
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,65 +39,74 @@ public class AdsController {
     }
 
     @GetMapping
+    @ApiOperation(value = "Get all advertisements", response = AdEntity.class, responseContainer = "List")
     public List<AdDTO> getAllAds() {
         return adService.findAllAds();
     }
 
     @PostMapping
-    public AdDTO createNewAd(@RequestBody AdDTO ad) {
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @ApiOperation(value = "Create a new advertisement", response = Long.class)
+    public AdDTO createNewAd(@ApiParam(value = "Advertisement data", required = true) @RequestBody AdDTO ad) {
         return adService.createAd(ad);
     }
 
     @GetMapping("/{id}")
-    public AdDTO getAdById(@PathVariable long id) {
+    @ApiOperation(value = "Get advertisement by ID", response = AdDTO.class)
+    public AdDTO getAdById(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id) {
         return adService.getAd(id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAd(@PathVariable long id) {
+    @PreAuthorize("hasRole('ADMIN') or (@userService.findAdsOfUser(authentication.principal.id).stream().anyMatch(ad > ad.id == #id))")
+    @ApiOperation(value = "Delete advertisement by ID")
+    public void deleteAd(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id) {
         adService.deleteAd(id);
     }
 
     @PatchMapping("/{id}")
-    public AdDTO updateAd(@PathVariable long id, @RequestBody AdDTO ad) throws IOException {
+    @PreAuthorize("hasRole('ADMIN') or (@userService.findAdsOfUser(authentication.principal.id).stream().anyMatch(ad > ad.id == #id))")
+    @ApiOperation(value = "Update advertisement by ID", response = AdDTO.class)
+    public AdDTO updateAd(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id,
+                          @ApiParam(value = "Updated advertisement data", required = true) @RequestBody AdDTO ad) throws IOException {
         return adService.updateInfoAd(id, ad);
     }
 
     @GetMapping("/me")
+    @ApiOperation(value = "Get current user's advertisements", response = AdEntity.class, responseContainer = "List")
     public List<AdDTO> getMineAds() {
         long userId = getCurrentUserId();
         return adService.findAdsOfUser(userId);
     }
 
     @GetMapping("/{id}/comments")
-    public List<CommentDTO> getComments(@PathVariable long id) {
+    @ApiOperation(value = "Get comments for an advertisement", response = CommentEntity.class, responseContainer = "List")
+    public List<CommentDTO> getComments(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id) {
         return commentService.showCommentToAd(id);
     }
 
     @PostMapping("/{id}/comments")
-    public long addComment(@PathVariable long id, @RequestBody CommentDTO comment) {
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @ApiOperation(value = "Add a comment to an advertisement", response = Long.class)
+    public long addComment(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id,
+                           @ApiParam(value = "Comment data", required = true) @RequestBody CommentDTO comment) {
         return commentService.newComment(id, comment);
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public void deleteComment(@PathVariable long adId, @PathVariable long commentId) {
+    @PreAuthorize("hasRole('ADMIN') or (@commentService.getCommentById(#adId, #commentId).user.id == authentication.principal.id)")
+    @ApiOperation(value = "Delete a comment from an advertisement")
+    public void deleteComment(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long adId,
+                              @ApiParam(value = "Comment ID", required = true) @PathVariable long commentId) {
         commentService.deleteComm(adId, commentId);
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public void updateCommentInfo(@PathVariable long adId, @PathVariable long commentId, @RequestBody CommentDTO comment) {
+    @PreAuthorize("hasRole('ADMIN') or (@commentService.getCommentById(#adId, #commentId).user.id == authentication.principal.id)")
+    @ApiOperation(value = "Update a comment on an advertisement")
+    public void updateCommentInfo(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long adId,
+                                  @ApiParam(value = "Comment ID", required = true) @PathVariable long commentId,
+                                  @ApiParam(value = "Updated comment data", required = true) @RequestBody CommentDTO comment) {
         commentService.updateCommentInfo(adId, commentId, comment);
-    }
-
-    @PostMapping("/{adId}/images")
-    public ResponseEntity<Long> uploadImage(@PathVariable Long adId, @RequestParam("imageFile") MultipartFile imageFile) {
-        ImageEntity imageEntity = imageRepository.uploadImage(imageFile);
-        adService.addImageToAd(adId, imageEntity);
-        return ResponseEntity.ok(imageEntity.getId());
-    }
-
-    @GetMapping("/{id}/images")
-    public List<ImageDTO> getAdImages(@PathVariable Long id) {
-        return imageService.getAdImages(id);
     }
 }

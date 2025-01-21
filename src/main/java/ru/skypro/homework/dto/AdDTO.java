@@ -1,14 +1,31 @@
 package ru.skypro.homework.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
 
+@ApiModel(description = "Data transfer object for advertisements")
 public class AdDTO {
+
+    @ApiModelProperty(value = "Unique identifier for the advertisement", required = true)
     private Long id;
+
+    @ApiModelProperty(value = "Title of the advertisement", required = true)
     private String title;
+
+    @ApiModelProperty(value = "Description of the advertisement", required = true)
     private String description;
+
+    @ApiModelProperty(value = "Photo of the advertisement")
     private MultipartFile photo;
+
+    @ApiModelProperty(value = "Price of the advertisement", required = true)
     private Integer price;
+
+    @ApiModelProperty(value = "Owner ID of the advertisement", required = true)
     private Long ownerId;
+
+    @ApiModelProperty(value = "Show comments of ad", required = true)
     private String comments;
 
     public AdDTO() {

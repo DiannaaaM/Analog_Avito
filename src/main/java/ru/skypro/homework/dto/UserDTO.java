@@ -1,14 +1,30 @@
 package ru.skypro.homework.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.web.multipart.MultipartFile;
 
+@ApiModel(description = "Data transfer object for user information")
 public class UserDTO {
+    @ApiModelProperty(value = "Unique identifier for the user", required = true)
     private Long id;
+
+    @ApiModelProperty(value = "Username of the user", required = true)
     private String username;
+
+    @ApiModelProperty(value = "First name of the user")
     private String firstName;
+
+    @ApiModelProperty(value = "Last name of the user")
     private String lastName;
+
+    @ApiModelProperty(value = "Phone number of the user")
     private String phone;
+
+    @ApiModelProperty(value = "Role of the user")
     private RoleDTO role;
+
+    @ApiModelProperty(value = "Profile image of the user")
     private MultipartFile image;
 
     public UserDTO() {

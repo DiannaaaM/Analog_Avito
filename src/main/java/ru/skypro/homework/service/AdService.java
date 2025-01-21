@@ -78,7 +78,7 @@ public class AdService {
         return mapper.adEntitiesToAdDTOs(adEntities);
     }
 
-    private String uploadImage(MultipartFile imageFile) throws IOException {
+    public String uploadImage(MultipartFile imageFile) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String extension = imageFile.getOriginalFilename().substring(imageFile.getOriginalFilename().lastIndexOf("."));
         String imagePath = uploadPath + "/" + uuid + extension;
