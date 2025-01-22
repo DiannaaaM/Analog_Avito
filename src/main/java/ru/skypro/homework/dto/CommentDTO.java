@@ -1,29 +1,25 @@
 package ru.skypro.homework.dto;
 
-import ru.skypro.homework.model.AdEntity;
-import ru.skypro.homework.model.UserEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@ApiModel(description = "Data transfer object for comments on advertisements")
 public class CommentDTO {
+
+    @ApiModelProperty(value = "Unique identifier for the comment", required = true)
     private Long id;
+
+    @ApiModelProperty(value = "Comment text", required = true)
     private String text;
+
+    @ApiModelProperty(value = "Timestamp of when the comment was created", required = true)
     private Long createdAt;
-    private UserEntity author;
-    private AdEntity ad;
 
-    public CommentDTO() {
-    }
+    @ApiModelProperty(value = "Author of the comment")
+    private UserDTO author;
 
-    public CommentDTO(Long id, String text, Long createdAt, UserEntity author, AdEntity ad) {
-        this.id = id;
-        this.text = text;
-        this.createdAt = createdAt;
-        this.author = author;
-        this.ad = ad;
-    }
-
-    public Long getId() {
-        return id;
-    }
+    @ApiModelProperty(value = "Advertisement associated with this comment")
+    private Long adId;
 
     public void setId(Long id) {
         this.id = id;
@@ -45,19 +41,11 @@ public class CommentDTO {
         this.createdAt = createdAt;
     }
 
-    public UserEntity getAuthor() {
+    public UserDTO getAuthor() {
         return author;
     }
 
-    public void setAuthor(UserEntity author) {
+    public void setAuthor(UserDTO author) {
         this.author = author;
-    }
-
-    public AdEntity getAd() {
-        return ad;
-    }
-
-    public void setAd(AdEntity ad) {
-        this.ad = ad;
     }
 }

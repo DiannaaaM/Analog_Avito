@@ -10,6 +10,7 @@ import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.mapper.EntityMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -36,18 +37,22 @@ public class CommentService {
         commentRepository.deleteByIdAndAdId(commId, adId);
     }
 
-    public CommentEntity updateCommentInfo(long adId, long commentId, CommentDTO commentDTO) {
-        CommentEntity existingComment = commentRepository.findById(commentId);
+    public CommentDTO updateCommentInfo(long adId, long commentId, CommentDTO commentDTO) {
+        Optional<CommentEntity> existingCommentOpt = commentRepository.findById(commentId);
 
-        if (!existingComment.getAd().getId().equals(adId)) {
+        if (existingCommentOpt.isEmpty() || !existingCommentOpt.get().getAd().getId().equals(adId)) {
             throw new RuntimeException("Comment does not belong to the ad with id: " + adId);
         }
 
+        CommentEntity existingComment = existingCommentOpt.get();
         existingComment.setText(commentDTO.getText());
-        return commentRepository.save(existingComment);
+        CommentEntity updatedComment = commentRepository.save(existingComment);
+
+        return mapper.commentEntityToCommentDTO(updatedComment);
     }
 
-    public List<CommentEntity> showCommentToAd(long adId) {
-        return commentRepository.findByAdId(adId);
+
+    public List<CommentDTO> showCommentToAd(long adId) {
+        return mapper.commentEntitiesToCommentDTOs(commentRepository.findByAdId(adId));
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.RegisterDTO;
 import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.mapper.EntityMapper;
+import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
@@ -44,13 +45,11 @@ public class UserService {
         if (updatedUser == null) {
             throw new RuntimeException("User not found");
         }
-        // Обновите поля пользователя
         updatedUser.setFirstName(update.getFirstName());
         updatedUser.setLastName(update.getLastName());
         updatedUser.setPhone(update.getPhone());
-        // Обновите изображение, если есть
-        if (update.getImage() != null) {
-            updatedUser.setImage(update.getImage());
+        if (update.getAvatar() != null) {
+            updatedUser.setAvatar((AvatarEntity) update.getAvatar());
         }
         userRepository.save(updatedUser);
         return updatedUser.getId();
