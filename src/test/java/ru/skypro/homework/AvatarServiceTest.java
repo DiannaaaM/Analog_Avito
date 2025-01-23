@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.repository.AvatarRepository;
 import ru.skypro.homework.service.AvatarService;
+import ru.skypro.homework.service.impl.AvatarServiceImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AvatarServiceTest {
 
     @InjectMocks
-    private AvatarService avatarService;
+    private AvatarServiceImpl avatarService;
 
     @Mock
     private AvatarRepository avatarRepository;

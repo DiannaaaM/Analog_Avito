@@ -12,6 +12,7 @@ import ru.skypro.homework.model.CommentEntity;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommentServiceTest {
 
     @InjectMocks
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     @Mock
     private CommentRepository commentRepository;

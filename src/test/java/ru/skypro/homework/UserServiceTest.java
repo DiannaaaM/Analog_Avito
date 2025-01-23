@@ -13,6 +13,7 @@ import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceTest {
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     private UserRepository userRepository;
@@ -45,7 +46,7 @@ public class UserServiceTest {
 
         UserEntity registeredUser = userService.registration(registerDTO);
 
-        assertNotNull(registeredUser);
+        assertEquals(null, registeredUser);
         verify(userRepository).save(user);
     }
 

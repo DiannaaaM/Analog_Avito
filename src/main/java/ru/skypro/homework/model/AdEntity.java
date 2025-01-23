@@ -87,4 +87,7 @@ public class AdEntity {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+    public void setId(long adId) {
+    }
 }

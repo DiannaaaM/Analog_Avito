@@ -20,6 +20,8 @@ import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.service.AvatarService;
 import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.impl.AvatarServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.nio.charset.StandardCharsets;
 
@@ -37,13 +39,13 @@ public class UserControllerTest {
     private UserController userController;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     private EntityMapper mapper;
 
     @Mock
-    private AvatarService avatarService;
+    private AvatarServiceImpl avatarService;
 
     @BeforeEach
     void setUp() {

@@ -98,4 +98,8 @@ public class UserEntity {
     public void setAvatar(AvatarEntity avatar) {
         this.avatar = avatar;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
