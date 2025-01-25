@@ -7,3 +7,5 @@ databaseChangeLog:
   jpa:
     hibernate:
       ddl-auto: update
+upload:
+  path: /images

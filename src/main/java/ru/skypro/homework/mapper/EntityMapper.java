@@ -2,18 +2,14 @@ package ru.skypro.homework.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
-import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.model.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring") // Эта аннотация позволяет Spring управлять маппером
 public interface EntityMapper {
-
-    EntityMapper INSTANCE = Mappers.getMapper(EntityMapper.class);
-
     @Mapping(target = "id", ignore = true)
     AdDTO adEntityToAdDTO(AdEntity adEntity);
 
@@ -32,7 +28,9 @@ public interface EntityMapper {
     CommentDTO commentEntityToCommentDTO(CommentEntity commentEntity);
 
     @Mapping(target = "id", ignore = true)
-    CommentEntity CommentDTOToCommentEntity(CommentDTO commentDTO);
+    CommentEntity сommentDTOToCommentEntity(CommentDTO commentDTO);
+
+    CommentEntity commentDTOToCommentEntity(CommentDTO commentDTO);
 
     List<CommentDTO> commentEntitiesToCommentDTOs(List<CommentEntity> commentEntityList);
 
@@ -45,6 +43,6 @@ public interface EntityMapper {
     List<ImageDTO> imageEntitiesToImageDTOs(List<ImageEntity> imageEntityList);
 
     default MultipartFile map(AvatarEntity value) {
-        return null; // Placeholder implementation
+        return null;
     }
 }

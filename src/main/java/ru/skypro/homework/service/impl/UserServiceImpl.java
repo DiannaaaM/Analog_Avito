@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
         userRepository.save(updatedUser);
         return updatedUser.getId();
     }
+
+    public void updateUserImage(Long userId, AvatarEntity avatar) {
+        userRepository.updateUserImage(avatar, userId);
+    }
+
 }

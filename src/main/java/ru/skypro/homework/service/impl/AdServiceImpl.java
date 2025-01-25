@@ -22,13 +22,20 @@ import java.util.UUID;
 @Service
 public class AdServiceImpl implements AdService {
     @Autowired
-private AdRepository adRepository;
+    private AdRepository adRepository;
 
-    @Autowired
-    private EntityMapper mapper;
+//    @Autowired
+//    private EntityMapper mapper;
 
     @Autowired
     private ImageRepository imageRepository;
+
+    private final EntityMapper mapper;
+
+    @Autowired
+    public AdServiceImpl(EntityMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @Value("${upload.path}")
     private String uploadPath;

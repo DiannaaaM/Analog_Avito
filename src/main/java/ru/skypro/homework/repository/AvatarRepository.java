@@ -11,7 +11,7 @@ import java.util.List;
 public interface AvatarRepository extends JpaRepository<AvatarEntity, Integer> {
     AvatarEntity save(AvatarEntity avatar);
     AvatarEntity findById(long id);
-    List<AvatarEntity> findAllByOrderByNameAsc();
-    List<AvatarEntity> getImagesByAdId(Long id);
+//    List<AvatarEntity> findAllByOrderByNameAsc();
+    List<AvatarEntity> getImagesByUser(Long id);
 
 }

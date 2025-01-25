@@ -45,19 +45,19 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public byte[] getImageDataFromPath(Long id) throws IOException {
-        Optional<ImageEntity> image = imageRepository.findById(id);
+        Optional<ImageEntity> image = imageRepository.findById(Math.toIntExact(id));
 
         Path filePath = Paths.get( image.get().getImagePath());
         return Files.readAllBytes(filePath);
     }
 
     public void deleteImage(Long id) {
-        Optional<ImageEntity> image = imageRepository.findById(id);
+        Optional<ImageEntity> image = imageRepository.findById(Math.toIntExact(id));
 
         Path filePath = Paths.get( image.get().getImagePath());
         try {
             Files.delete(filePath);
-            imageRepository.delete(image);
+            imageRepository.deleteById(Math.toIntExact(id));
         } catch (IOException e) {
             throw new RuntimeException("Failed to delete image: " + e.getMessage());
         }
@@ -65,5 +65,8 @@ public class ImageServiceImpl implements ImageService {
 
     public List<ImageDTO> getAdImages(Long id) {
         return mapper.imageEntitiesToImageDTOs(imageRepository.getImagesByAdId(id));
+    }
+    public void updateImage(String imagePath, Integer imageId, MultipartFile upload) {
+        imageRepository.uploadImage(imagePath, imageId);
     }
 }
