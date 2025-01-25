@@ -10,29 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class YourUserDetailService implements UserDetailsService {
-    private final EntityManagerFactory entityManagerFactory;
     private final UserRepository userRepository;
 
     @Autowired
-    public YourUserDetailService(EntityManagerFactory entityManagerFactory, UserRepository userRepository) {
-        this.entityManagerFactory = entityManagerFactory;
+    public YourUserDetailService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public UserEntity getUserById(Long id) {
+    public Optional<UserEntity> getUserById(Long id) {
         return userRepository.findById(id);
-    }
-
-
-    public YourUserDetailService(UserRepository userRepository, EntityManagerFactory entityManagerFactory) {
-        this.userRepository = userRepository;
-        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.UserEntity;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
@@ -20,6 +22,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     boolean existsById(long id);
 
     UserEntity findById(long id);
+    Optional<UserEntity> findById(Long id);
 
     UserEntity findByUsername(String username);
 }

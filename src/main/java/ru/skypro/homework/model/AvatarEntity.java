@@ -1,7 +1,6 @@
 package ru.skypro.homework.model;
 
-import javax.persistence.*;
-
+import jakarta.persistence.*;
 @Entity
 @Table(name = "avatars")
 public class AvatarEntity {
