@@ -16,8 +16,19 @@ import java.util.Optional;
 @Service
 @Transactional
 public class YourUserDetailService implements UserDetailsService {
-    private final UserRepository userRepository;
     private final EntityManagerFactory entityManagerFactory;
+    private final UserRepository userRepository;
+
+    @Autowired
+    public YourUserDetailService(EntityManagerFactory entityManagerFactory, UserRepository userRepository) {
+        this.entityManagerFactory = entityManagerFactory;
+        this.userRepository = userRepository;
+    }
+
+    public UserEntity getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+
 
     public YourUserDetailService(UserRepository userRepository, EntityManagerFactory entityManagerFactory) {
         this.userRepository = userRepository;

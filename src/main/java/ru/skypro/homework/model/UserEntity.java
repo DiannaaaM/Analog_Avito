@@ -1,16 +1,11 @@
 package ru.skypro.homework.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.RoleDTO;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-@Setter
-@Getter
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
