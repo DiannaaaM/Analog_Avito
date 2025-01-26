@@ -20,19 +20,21 @@ public class AdEntity {
     private List<ImageEntity> images;
     private Integer price;
     @ManyToOne
-    private UserEntity owner;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     private String comments;
 
     public AdEntity() {
     }
 
-    public AdEntity(Long id, String title, String description, List<ImageEntity> images, Integer price, UserEntity owner, String comments) {
+    public AdEntity(Long id, String title, String description, List<ImageEntity> images, Integer price, UserEntity user, String comments) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.images = images;
         this.price = price;
-        this.owner = owner;
+        this.user = user;
         this.comments = comments;
     }
 
@@ -72,12 +74,12 @@ public class AdEntity {
         this.price = price;
     }
 
-    public UserEntity getOwner() {
-        return owner;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setOwner(UserEntity owner) {
-        this.owner = owner;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public String getComments() {

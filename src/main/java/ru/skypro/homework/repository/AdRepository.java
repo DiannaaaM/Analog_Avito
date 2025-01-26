@@ -16,6 +16,7 @@ public interface AdRepository extends JpaRepository<AdEntity, Integer> {
 
     void deleteById(Long id);
 
-    List<AdEntity> findByOwnerId(long id);
-}
+    List<AdEntity> findByUserId(long id);
 
+    List<AdEntity> findAllByUserId(Long userId);
+}

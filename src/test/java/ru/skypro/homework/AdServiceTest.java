@@ -12,7 +12,6 @@ import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.ImageRepository;
-import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 
 import java.nio.file.Files;
@@ -65,7 +64,7 @@ public class AdServiceTest {
         long adId = 1L;
         AdDTO adDTO = new AdDTO();
         AdEntity existingAd = new AdEntity();
-        existingAd.setId(adId);
+        existingAd.setPk(adId);
         when(adRepository.findById(adId)).thenReturn(existingAd);
         when(adRepository.save(existingAd)).thenReturn(existingAd);
         when(mapper.adEntityToAdDTO(existingAd)).thenReturn(adDTO);

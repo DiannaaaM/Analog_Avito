@@ -69,7 +69,7 @@ public class UserServiceTest {
 
         long updatedUserId = userService.updateUserInfo(updateDTO);
 
-        assertEquals(user.getId(), updatedUserId);
+        assertEquals(user.getPk(), updatedUserId);
         verify(userRepository).save(user);
     }
 }

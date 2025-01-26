@@ -80,7 +80,7 @@ public class AdServiceImpl implements AdService {
     }
 
     public List<AdDTO> findAdsOfUser(long id) {
-        List<AdEntity> adEntities = adRepository.findByOwnerId(id);
+        List<AdEntity> adEntities = adRepository.findByUserId(id);
         return mapper.adEntitiesToAdDTOs(adEntities);
     }
 
@@ -107,6 +107,11 @@ public class AdServiceImpl implements AdService {
 
         adRepository.save(ad);
     }
+
+    public List<AdEntity> getUserAds(Long userId) {
+        return adRepository.findAllByUserId(userId);
+    }
+
 }
 
 
