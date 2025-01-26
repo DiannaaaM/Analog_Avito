@@ -12,6 +12,7 @@ import ru.skypro.homework.model.CommentEntity;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommentServiceTest {
 
     @InjectMocks
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     @Mock
     private CommentRepository commentRepository;
@@ -44,7 +45,7 @@ public class CommentServiceTest {
         AdEntity adEntity = new AdEntity();
         CommentEntity newComment = new CommentEntity();
         when(adRepository.findById(adId)).thenReturn(adEntity);
-        when(mapper.CommentDTOToCommentEntity(commentDTO)).thenReturn(newComment);
+        when(mapper.сommentDTOToCommentEntity(commentDTO)).thenReturn(newComment);
         when(commentRepository.save(newComment)).thenReturn(newComment);
 
         long commentId = commentService.newComment(adId, commentDTO);

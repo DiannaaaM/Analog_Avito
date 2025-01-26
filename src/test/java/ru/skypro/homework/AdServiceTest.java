@@ -13,6 +13,7 @@ import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdServiceTest {
 
     @InjectMocks
-    private AdService adService;
+    private AdServiceImpl adService;
 
     @Mock
     private AdRepository adRepository;

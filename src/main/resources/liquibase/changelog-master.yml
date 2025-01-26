@@ -1,0 +1,13 @@
+databaseChangeLog:
+  includeAll:
+      path: liquibase/scripts/
+  datasource:
+    url: jdbc:postgresql://localhost:5432/avito
+    username: postgres
+    password: 493138
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+upload:
+  path: /images

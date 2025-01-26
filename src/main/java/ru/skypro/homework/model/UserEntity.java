@@ -1,16 +1,12 @@
 package ru.skypro.homework.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+import jakarta.persistence.*;
+import lombok.Data;
 import ru.skypro.homework.dto.RoleDTO;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-@Setter
-@Getter
+@Data
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +16,7 @@ public class UserEntity {
     private String firstName;
     private String lastName;
     private String phone;
+    @Enumerated(EnumType.STRING)
     private RoleDTO role;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "avatar_id")
@@ -97,5 +94,9 @@ public class UserEntity {
 
     public void setAvatar(AvatarEntity avatar) {
         this.avatar = avatar;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

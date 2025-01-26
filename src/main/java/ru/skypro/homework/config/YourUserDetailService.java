@@ -1,19 +1,24 @@
 package ru.skypro.homework.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import jakarta.persistence.EntityManagerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class YourUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
+    @Autowired
     public YourUserDetailService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

@@ -10,8 +10,8 @@ import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.UserEntity;
-import ru.skypro.homework.service.AvatarService;
-import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.impl.AvatarServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.io.IOException;
 
@@ -20,13 +20,13 @@ import java.io.IOException;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private EntityMapper mapper;
 
     @Autowired
-    private AvatarService avatarService;
+    private AvatarServiceImpl avatarService;
 
     @PostMapping("/set_password")
     public ResponseEntity<String> setPassword(@RequestBody UpdatePasswordDTO password) {

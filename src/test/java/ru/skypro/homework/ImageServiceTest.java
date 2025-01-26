@@ -11,6 +11,7 @@ import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.ImageService;
+import ru.skypro.homework.service.impl.ImageServiceImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ImageServiceTest {
 
     @InjectMocks
-    private ImageService imageService;
+    private ImageServiceImpl imageService;
 
     @Mock
     private ImageRepository imageRepository;

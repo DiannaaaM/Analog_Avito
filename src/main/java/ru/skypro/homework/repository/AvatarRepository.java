@@ -6,12 +6,12 @@ import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.ImageEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AvatarRepository extends JpaRepository<AvatarEntity, Integer> {
-    AvatarEntity save(AvatarEntity avatar);
-    AvatarEntity findById(long id);
-    List<AvatarEntity> findAllByOrderByNameAsc();
-    List<AvatarEntity> getImagesByAdId(Long id);
+    Optional<AvatarEntity> save(Optional<AvatarEntity> avatar);
+    Optional<AvatarEntity> findById(long id);
+    List<AvatarEntity> getImagesByUser(Long id);
 
 }

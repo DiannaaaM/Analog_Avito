@@ -13,8 +13,8 @@ import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.CommentEntity;
 import ru.skypro.homework.model.UserEntity;
-import ru.skypro.homework.service.AdService;
-import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.impl.AdServiceImpl;
+import ru.skypro.homework.service.impl.CommentServiceImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,10 +24,10 @@ import java.util.List;
 @Api(tags = "Advertisement Management")
 public class AdsController {
     @Autowired
-    private AdService adService;
+    private AdServiceImpl adService;
 
     @Autowired
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

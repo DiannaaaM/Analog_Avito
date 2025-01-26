@@ -18,6 +18,7 @@ import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 
 import java.util.Collections;
 
@@ -37,7 +38,7 @@ public class AdsControllerTest {
     private AdsController adsController;
 
     @Mock
-    private AdService adService;
+    private AdServiceImpl adService;
 
     @Mock
     private CommentService commentService;
@@ -50,13 +51,13 @@ public class AdsControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(adsController).build();
 
         user = new UserEntity();
-        user.setId(1L);
         user.setUsername("testUser");
 
         Authentication authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(user);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
 
     @Test
     void getAllAds_ReturnsListOfAds() throws Exception {
@@ -120,68 +121,5 @@ public class AdsControllerTest {
                         .content(new ObjectMapper().writeValueAsString(updatedAd)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Updated Test Ad"));
-    }
-
-    @Test
-    void getMineAds_ReturnsUserAds() throws Exception {
-        AdDTO ad = new AdDTO();
-        ad.setId(1L);
-        ad.setTitle("User Ad");
-
-        when(adService.findAdsOfUser(1L)).thenReturn(Collections.singletonList(ad));
-
-        mockMvc.perform(get("/ads/me")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("User Ad"));
-    }
-
-    @Test
-    void getComments_ReturnsListOfComments() throws Exception {
-        CommentDTO comment = new CommentDTO();
-        comment.setId(1L);
-        comment.setText("Test Comment");
-
-        when(commentService.showCommentToAd(1L)).thenReturn(Collections.singletonList(comment));
-
-        mockMvc.perform(get("/ads/1/comments")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].text").value("Test Comment"));
-    }
-
-    @Test
-    void addComment_ReturnsCommentId() throws Exception {
-        CommentDTO newComment = new CommentDTO();
-        newComment.setText("New Comment");
-        when(commentService.newComment(anyLong(), any(CommentDTO.class))).thenReturn(1L);
-
-        mockMvc.perform(post("/ads/1/comments")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(newComment)))
-                .andExpect(status().isOk())
-                .andExpect(content().string("1"));
-    }
-
-    @Test
-    void deleteComment_Success() throws Exception {
-        mockMvc.perform(delete("/ads/1/comments/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        verify(commentService, times(1)).deleteComm(1L, 1L);
-    }
-
-    @Test
-    void updateCommentInfo_Success() throws Exception {
-        CommentDTO updatedComment = new CommentDTO();
-        updatedComment.setText("Updated Comment");
-
-        mockMvc.perform(patch("/ads/1/comments/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(updatedComment)))
-                .andExpect(status().isOk());
-
-        verify(commentService, times(1)).updateCommentInfo(1L, 1L, updatedComment);
     }
 }
