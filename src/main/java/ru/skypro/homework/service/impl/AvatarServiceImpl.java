@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -38,9 +39,9 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     public byte[] getImageDataFromPath(Long id) throws IOException {
-        AvatarEntity avatar = avatarRepository.findById(id);
+        Optional<AvatarEntity> avatar = avatarRepository.findById(id);
 
-        Path filePath = Paths.get(avatar.getImagePath());
+        Path filePath = Paths.get(avatar.get().getImagePath());
         return Files.readAllBytes(filePath);
     }
 }

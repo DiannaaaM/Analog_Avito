@@ -1,4 +1,6 @@
 databaseChangeLog:
+  includeAll:
+      path: liquibase/scripts/
   datasource:
     url: jdbc:postgresql://localhost:5432/avito
     username: postgres

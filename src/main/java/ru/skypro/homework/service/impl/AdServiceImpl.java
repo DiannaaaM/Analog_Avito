@@ -17,15 +17,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class AdServiceImpl implements AdService {
     @Autowired
     private AdRepository adRepository;
-
-//    @Autowired
-//    private EntityMapper mapper;
 
     @Autowired
     private ImageRepository imageRepository;
@@ -41,8 +39,8 @@ public class AdServiceImpl implements AdService {
     private String uploadPath;
 
     public AdDTO getAd(Long id) {
-        AdEntity adEntity = adRepository.findById(id);
-        return mapper.adEntityToAdDTO(adEntity);
+        Optional<AdEntity> adEntity = adRepository.findById(id);
+        return mapper.adEntityToAdDTO(adEntity.orElse(null));
     }
 
     public AdDTO createAd(AdDTO adDTO) {
@@ -52,21 +50,21 @@ public class AdServiceImpl implements AdService {
     }
 
     public AdDTO updateInfoAd(long id, AdDTO ad) throws IOException {
-        AdEntity existingAd = adRepository.findById(id);
+        Optional<AdEntity> existingAd = adRepository.findById(id);
 
-        existingAd.setTitle(ad.getTitle());
-        existingAd.setDescription(ad.getDescription());
-        existingAd.setPrice(ad.getPrice());
-        existingAd.setComments(ad.getComments());
+        existingAd.get().setTitle(ad.getTitle());
+        existingAd.get().setDescription(ad.getDescription());
+        existingAd.get().setPrice(ad.getPrice());
+        existingAd.get().setComments(ad.getComments());
 
         if (ad.getPhoto() != null && !ad.getPhoto().isEmpty()) {
             ImageEntity imageEntity = new ImageEntity();
             imageEntity.setImagePath(uploadImage(ad.getPhoto()));
-            existingAd.getImages().add(imageEntity);
+            existingAd.get().getImages().add(imageEntity);
         }
 
-        AdEntity updatedAd = adRepository.save(existingAd);
-        return mapper.adEntityToAdDTO(updatedAd);
+        Optional<AdEntity> updatedAd = adRepository.save(existingAd);
+        return mapper.adEntityToAdDTO(updatedAd.orElse(null));
     }
 
     public void deleteAd(Long id) {
@@ -99,13 +97,13 @@ public class AdServiceImpl implements AdService {
     }
 
     public void addImageToAd(Long adId, ImageEntity imageEntity) {
-        AdEntity ad = adRepository.findById(adId);
+        Optional<AdEntity> ad = adRepository.findById(adId);
 
-        imageEntity.setAd(ad);
+        imageEntity.setAd(ad.orElse(null));
 
         ImageEntity savedImage = imageRepository.save(imageEntity);
 
-        ad.getImages().add(savedImage);
+        ad.get().getImages().add(savedImage);
 
         adRepository.save(ad);
     }

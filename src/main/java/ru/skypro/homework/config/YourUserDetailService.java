@@ -6,11 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
-import jakarta.persistence.EntityManagerFactory;
 import java.util.Optional;
 
 @Service
@@ -21,10 +21,6 @@ public class YourUserDetailService implements UserDetailsService {
     @Autowired
     public YourUserDetailService(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    public Optional<UserEntity> getUserById(Long id) {
-        return userRepository.findById(id);
     }
 
     @Override

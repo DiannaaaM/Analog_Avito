@@ -17,11 +17,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query("UPDATE UserEntity u SET u.avatar = :image WHERE u.id = :userId")
     void updateUserImage(@Param("image") AvatarEntity avatar, @Param("userId") Long userId);
 
-    UserEntity findByFirstName(String firstName);
+    Optional<UserEntity> findByFirstName(String firstName);
 
     boolean existsById(long id);
 
-    UserEntity findById(long id);
     Optional<UserEntity> findById(Long id);
 
     UserEntity findByUsername(String username);

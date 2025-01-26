@@ -25,10 +25,10 @@ public class CommentServiceImpl implements CommentService {
     private EntityMapper mapper;
 
     public long newComment(long adId, CommentDTO commentDTO) {
-        AdEntity adEntity = adRepository.findById(adId);
+        Optional<AdEntity> adEntity = adRepository.findById(adId);
 
         CommentEntity newComm = mapper.сommentDTOToCommentEntity(commentDTO);
-        newComm.setAd(adEntity);
+        newComm.setAd(adEntity.orElse(null));
 
         commentRepository.save(newComm);
         return newComm.getId();

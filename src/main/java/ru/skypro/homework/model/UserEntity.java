@@ -1,10 +1,12 @@
 package ru.skypro.homework.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import ru.skypro.homework.dto.RoleDTO;
 
 @Entity
 @Table(name = "users")
+@Data
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +16,7 @@ public class UserEntity {
     private String firstName;
     private String lastName;
     private String phone;
+    @Enumerated(EnumType.STRING)
     private RoleDTO role;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "avatar_id")

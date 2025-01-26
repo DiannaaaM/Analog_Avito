@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info())
 @EnableJpaRepositories("ru.skypro.homework.repository")
-@EntityScan(basePackages = "ru.skypro.homework.model")
 public class HomeworkApplication {
   public static void main(String[] args) {
     SpringApplication.run(HomeworkApplication.class, args);
