@@ -13,6 +13,7 @@ import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.CommentEntity;
 import ru.skypro.homework.model.UserEntity;
+import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 import ru.skypro.homework.service.impl.CommentServiceImpl;
 
@@ -28,6 +29,9 @@ public class AdsController {
 
     @Autowired
     private CommentServiceImpl commentService;
+
+    @Autowired
+    private UserService userService;
 
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,11 +49,12 @@ public class AdsController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or (@userService.findAdsOfUser(authentication.principal.id).stream().anyMatch(ad > ad.id == #ad.id))")
     @ApiOperation(value = "Create a new advertisement", response = Long.class)
     public AdDTO createNewAd(@ApiParam(value = "Advertisement data", required = true) @RequestBody AdDTO ad) {
         return adService.createAd(ad);
     }
+
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get advertisement by ID", response = AdDTO.class)
@@ -64,6 +69,8 @@ public class AdsController {
         adService.deleteAd(id);
     }
 
+
+
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or (@userService.findAdsOfUser(authentication.principal.id).stream().anyMatch(ad > ad.id == #id))")
     @ApiOperation(value = "Update advertisement by ID", response = AdDTO.class)
@@ -71,6 +78,7 @@ public class AdsController {
                           @ApiParam(value = "Updated advertisement data", required = true) @RequestBody AdDTO ad) throws IOException {
         return adService.updateInfoAd(id, ad);
     }
+
 
     @GetMapping("/me")
     @ApiOperation(value = "Get current user's advertisements", response = AdEntity.class, responseContainer = "List")
