@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.RegisterDTO;
 import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.mapper.EntityMapper;
+import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.UserEntity;
+import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private EntityMapper mapper;
+
+    @Autowired
+    private AdRepository adRepository;
 
     public Authentication authentication() {
         return SecurityContextHolder.getContext().getAuthentication();

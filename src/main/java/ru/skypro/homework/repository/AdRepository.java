@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AdRepository extends JpaRepository<AdEntity, Integer> {
+public interface AdRepository extends JpaRepository<AdEntity, Long> {
     Optional<AdEntity> save(Optional<AdEntity> ad);
     Optional<AdEntity> findById(Long id);
 

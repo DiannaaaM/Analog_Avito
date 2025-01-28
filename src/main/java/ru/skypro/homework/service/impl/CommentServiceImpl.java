@@ -25,35 +25,35 @@ public class CommentServiceImpl implements CommentService {
     private EntityMapper mapper;
 
     public long newComment(long adId, CommentDTO commentDTO) {
-        Optional<AdEntity> adEntity = adRepository.findById(adId);
+        Optional<AdEntity> adEntity = adRepository.findById( adId );
 
-        CommentEntity newComm = mapper.сommentDTOToCommentEntity(commentDTO);
-        newComm.setAd(adEntity.orElse(null));
+        CommentEntity newComm = mapper.сommentDTOToCommentEntity( commentDTO );
+        newComm.setAd( adEntity.orElse( null ) );
 
-        commentRepository.save(newComm);
+        commentRepository.save( newComm );
         return newComm.getId();
     }
 
     public void deleteComm(long adId, long commId) {
-        commentRepository.deleteByIdAndAdId(commId, adId);
+        commentRepository.deleteByIdAndAdId( commId, adId );
     }
 
     public CommentDTO updateCommentInfo(long adId, long commentId, CommentDTO commentDTO) {
-        Optional<CommentEntity> existingCommentOpt = commentRepository.findById(commentId);
+        Optional<CommentEntity> existingCommentOpt = commentRepository.findById( commentId );
 
-        if (existingCommentOpt.isEmpty() || !existingCommentOpt.get().getAd().getId().equals(adId)) {
-            throw new RuntimeException("Comment does not belong to the ad with id: " + adId);
+        if (existingCommentOpt.isEmpty() || !existingCommentOpt.get().getAd().getId().equals( adId )) {
+            throw new RuntimeException( "Comment does not belong to the ad with id: " + adId );
         }
 
         CommentEntity existingComment = existingCommentOpt.get();
-        existingComment.setText(commentDTO.getText());
-        CommentEntity updatedComment = commentRepository.save(existingComment);
+        existingComment.setText( commentDTO.getText() );
+        CommentEntity updatedComment = commentRepository.save( existingComment );
 
-        return mapper.commentEntityToCommentDTO(updatedComment);
+        return mapper.commentEntityToCommentDTO( updatedComment );
     }
 
 
     public List<CommentDTO> showCommentToAd(long adId) {
-        return mapper.commentEntitiesToCommentDTOs(commentRepository.findByAdId(adId));
+        return mapper.commentEntitiesToCommentDTOs( commentRepository.findByAdId( adId ) );
     }
 }

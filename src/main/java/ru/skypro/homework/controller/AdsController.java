@@ -13,9 +13,9 @@ import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.CommentEntity;
 import ru.skypro.homework.model.UserEntity;
-import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 import ru.skypro.homework.service.impl.CommentServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +31,7 @@ public class AdsController {
     private CommentServiceImpl commentService;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,7 +49,7 @@ public class AdsController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or (@userService.findAdsOfUser(authentication.principal.id).stream().anyMatch(ad > ad.id == #ad.id))")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @ApiOperation(value = "Create a new advertisement", response = Long.class)
     public AdDTO createNewAd(@ApiParam(value = "Advertisement data", required = true) @RequestBody AdDTO ad) {
         return adService.createAd(ad);
@@ -63,7 +63,7 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or (@userService.findAdsOfUser(authentication.principal.id).stream().anyMatch(ad > ad.id == #id))")
+    @PreAuthorize("hasRole('ADMIN') or @userService.isAdOwner(authentication.principal.id, #id)")
     @ApiOperation(value = "Delete advertisement by ID")
     public void deleteAd(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id) {
         adService.deleteAd(id);
@@ -72,7 +72,7 @@ public class AdsController {
 
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or (@userService.findAdsOfUser(authentication.principal.id).stream().anyMatch(ad > ad.id == #id))")
+    @PreAuthorize("hasRole('ADMIN') or @userService.isAdOwner(authentication.principal.id, #id)")
     @ApiOperation(value = "Update advertisement by ID", response = AdDTO.class)
     public AdDTO updateAd(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id,
                           @ApiParam(value = "Updated advertisement data", required = true) @RequestBody AdDTO ad) throws IOException {
@@ -102,7 +102,7 @@ public class AdsController {
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or (@commentService.getCommentById(#adId, #commentId).user.id == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') or @commentService.isCommentOwner(authentication.principal.id, #commentId)")
     @ApiOperation(value = "Delete a comment from an advertisement")
     public void deleteComment(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long adId,
                               @ApiParam(value = "Comment ID", required = true) @PathVariable long commentId) {
@@ -110,7 +110,7 @@ public class AdsController {
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize("hasRole('ADMIN') or (@commentService.getCommentById(#adId, #commentId).user.id == authentication.principal.id)")
+    @PreAuthorize("hasRole('ADMIN') or @commentService.isCommentOwner(authentication.principal.id, #commentId)")
     @ApiOperation(value = "Update a comment on an advertisement")
     public void updateCommentInfo(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long adId,
                                   @ApiParam(value = "Comment ID", required = true) @PathVariable long commentId,
