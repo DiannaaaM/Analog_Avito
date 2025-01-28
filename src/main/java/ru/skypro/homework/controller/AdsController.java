@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,8 +84,8 @@ public class AdsController {
     @GetMapping("/me")
     @ApiOperation(value = "Get current user's advertisements", response = AdEntity.class, responseContainer = "List")
     public List<AdDTO> getMineAds() {
-        long userId = getCurrentUserId();
-        return adService.findAdsOfUser(userId);
+        List<AdDTO> userAds = userService.getUserAds();
+        return ResponseEntity.ok(userAds).getBody();
     }
 
     @GetMapping("/{id}/comments")

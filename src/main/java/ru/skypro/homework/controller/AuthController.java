@@ -1,8 +1,5 @@
 package ru.skypro.homework.controller;
 
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,13 +10,10 @@ import ru.skypro.homework.dto.LoginDTO;
 import ru.skypro.homework.dto.RegisterDTO;
 import ru.skypro.homework.service.AuthService;
 
-//@Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
-//@RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
@@ -28,19 +22,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO login) {
-        if (authService.login(login.getUsername(), login.getPassword())) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        try {
+            String token = String.valueOf( authService.login(login.getEmail(), login.getPassword()) );
+            return ResponseEntity.ok().body(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterDTO register) {
-        if (authService.register(register)) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        try {
+            authService.register(register);
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Registration failed: " + e.getMessage());
         }
     }
 }

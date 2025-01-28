@@ -23,16 +23,16 @@ public class YourUserDetailService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> userEntityOptional = Optional.ofNullable(userRepository.findByUsername(username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Optional<UserEntity>> userEntityOptional = Optional.ofNullable(userRepository.findByEmail(email));
         if (userEntityOptional.isEmpty()) {
             throw new UsernameNotFoundException("Пользователя с данным именем нет \n:/");
         }
-        UserEntity userEntity = userEntityOptional.get();
+        Optional<UserEntity> userEntity = userEntityOptional.get();
         return User.builder()
-                .username(username)
-                .password(userEntity.getPassword())
-                .roles(userEntity.getRole().name())
+                .username(email)
+                .password( userEntity.get().getPassword())
+                .roles( userEntity.get().getRole().name())
                 .build();
     }
 }

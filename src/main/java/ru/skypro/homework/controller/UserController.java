@@ -14,6 +14,7 @@ import ru.skypro.homework.service.impl.AvatarServiceImpl;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -38,11 +39,11 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getUserInfo() {
-        UserEntity userEntity = userService.getCurrentUser();
-        if (userEntity == null) {
+        Optional<UserEntity> userEntity = userService.getCurrentUser();
+        if (userEntity.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        UserDTO userDTO = mapper.userEntityToUserDTO(userEntity);
+        UserDTO userDTO = mapper.userEntityToUserDTO( userEntity.orElse( null ) );
         return ResponseEntity.ok(userDTO);
     }
 

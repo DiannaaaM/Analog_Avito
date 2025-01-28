@@ -18,8 +18,6 @@ import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.AvatarEntity;
 import ru.skypro.homework.model.UserEntity;
-import ru.skypro.homework.service.AvatarService;
-import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.impl.AvatarServiceImpl;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
@@ -83,7 +81,7 @@ public class UserControllerTest {
     void getUserInfo_UserExists_ReturnsUserInfo() throws Exception {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
-        userEntity.setUsername("testUser");
+        userEntity.setEmail("testUser");
 
         UserDTO userDTO = new UserDTO();
         userDTO.setId(1L);

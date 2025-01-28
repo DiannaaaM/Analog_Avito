@@ -14,9 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.skypro.homework.controller.AdsController;
 import ru.skypro.homework.dto.AdDTO;
-import ru.skypro.homework.dto.CommentDTO;
 import ru.skypro.homework.model.UserEntity;
-import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 
@@ -51,7 +49,7 @@ public class AdsControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(adsController).build();
 
         user = new UserEntity();
-        user.setUsername("testUser");
+        user.setEmail("testUser");
 
         Authentication authentication = mock(Authentication.class);
         when(authentication.getPrincipal()).thenReturn(user);

@@ -8,8 +8,8 @@ import lombok.Data;
 @ApiModel(description = "Data transfer object for user registration")
 public class RegisterDTO {
 
-    @ApiModelProperty(value = "Username for registration", required = true)
-    private String username;
+    @ApiModelProperty(value = "Email for registration", required = true)
+    private String email;
 
     @ApiModelProperty(value = "Password for registration", required = true)
     private String password;
@@ -27,12 +27,12 @@ public class RegisterDTO {
     private RoleDTO role;
 
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

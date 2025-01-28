@@ -11,7 +11,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String email;
     private String password;
     private String firstName;
     private String lastName;
@@ -26,8 +26,8 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(String username, String password, String firstName, String lastName, String phone, RoleDTO role, AvatarEntity avatar) {
-        this.username = username;
+    public UserEntity(String email, String password, String firstName, String lastName, String phone, RoleDTO role, AvatarEntity avatar) {
+        this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,12 +40,12 @@ public class UserEntity {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String username) {
+        this.email = username;
     }
 
     public String getPassword() {

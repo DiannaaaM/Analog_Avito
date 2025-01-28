@@ -8,9 +8,11 @@ import ru.skypro.homework.dto.AdDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.AdEntity;
 import ru.skypro.homework.model.ImageEntity;
+import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,6 +31,8 @@ public class AdServiceImpl implements AdService {
     private ImageRepository imageRepository;
 
     private final EntityMapper mapper;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public AdServiceImpl(EntityMapper mapper) {
@@ -43,9 +47,18 @@ public class AdServiceImpl implements AdService {
         return mapper.adEntityToAdDTO(adEntity.orElse(null));
     }
 
-    public AdDTO createAd(AdDTO adDTO) {
-        AdEntity adEntity = mapper.adDTOToAdEntity(adDTO);
+    public AdDTO createAd(AdDTO createAdDTO) {
+        UserEntity currentUser = userService.getCurrentUser()
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        AdEntity adEntity = new AdEntity();
+        adEntity.setTitle(createAdDTO.getTitle());
+        adEntity.setDescription(createAdDTO.getDescription());
+        adEntity.setPrice(createAdDTO.getPrice());
+        adEntity.setOwner(currentUser);
+
         AdEntity savedAd = adRepository.save(adEntity);
+
         return mapper.adEntityToAdDTO(savedAd);
     }
 
