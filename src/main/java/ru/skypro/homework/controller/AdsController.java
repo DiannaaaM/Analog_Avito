@@ -34,6 +34,12 @@ public class AdsController {
     @Autowired
     private UserServiceImpl userService;
 
+    /**
+     * Retrieves the current authenticated user's ID.
+     *
+     * @return the ID of the current authenticated user.
+     * @throws RuntimeException if the user is not found or not authenticated.
+     */
     private long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
@@ -43,12 +49,23 @@ public class AdsController {
         throw new RuntimeException("User not found");
     }
 
+    /**
+     * Retrieves all advertisements.
+     *
+     * @return a list of all advertisements as {@link AdDTO} objects.
+     */
     @GetMapping
     @ApiOperation(value = "Get all advertisements", response = AdEntity.class, responseContainer = "List")
     public List<AdDTO> getAllAds() {
         return adService.findAllAds();
     }
 
+    /**
+     * Creates a new advertisement.
+     *
+     * @param ad the advertisement data to be created, encapsulated in an {@link AdDTO}.
+     * @return the created advertisement as an {@link AdDTO}.
+     */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @ApiOperation(value = "Create a new advertisement", response = Long.class)
@@ -56,13 +73,23 @@ public class AdsController {
         return adService.createAd(ad);
     }
 
-
+    /**
+     * Retrieves an advertisement by its ID.
+     *
+     * @param id the ID of the advertisement to retrieve.
+     * @return the advertisement as an {@link AdDTO}.
+     */
     @GetMapping("/{id}")
     @ApiOperation(value = "Get advertisement by ID", response = AdDTO.class)
     public AdDTO getAdById(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id) {
         return adService.getAd(id);
     }
 
+    /**
+     * Deletes an advertisement by its ID.
+     *
+     * @param id the ID of the advertisement to delete.
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @userService.isAdOwner(authentication.principal.id, #id)")
     @ApiOperation(value = "Delete advertisement by ID")
@@ -70,8 +97,14 @@ public class AdsController {
         adService.deleteAd(id);
     }
 
-
-
+    /**
+     * Updates an advertisement by its ID.
+     *
+     * @param id the ID of the advertisement to update.
+     * @param ad the updated advertisement data, encapsulated in an {@link AdDTO}.
+     * @return the updated advertisement as an {@link AdDTO}.
+     * @throws IOException if an I/O error occurs during the update process.
+     */
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @userService.isAdOwner(authentication.principal.id, #id)")
     @ApiOperation(value = "Update advertisement by ID", response = AdDTO.class)
@@ -80,7 +113,11 @@ public class AdsController {
         return adService.updateInfoAd(id, ad);
     }
 
-
+    /**
+     * Retrieves the current user's advertisements.
+     *
+     * @return a list of the current user's advertisements as {@link AdDTO} objects.
+     */
     @GetMapping("/me")
     @ApiOperation(value = "Get current user's advertisements", response = AdEntity.class, responseContainer = "List")
     public List<AdDTO> getMineAds() {
@@ -88,12 +125,25 @@ public class AdsController {
         return ResponseEntity.ok(userAds).getBody();
     }
 
+    /**
+     * Retrieves comments for a specific advertisement.
+     *
+     * @param id the ID of the advertisement for which to retrieve comments.
+     * @return a list of comments as {@link CommentDTO} objects.
+     */
     @GetMapping("/{id}/comments")
     @ApiOperation(value = "Get comments for an advertisement", response = CommentEntity.class, responseContainer = "List")
     public List<CommentDTO> getComments(@ApiParam(value = "Advertisement ID", required = true) @PathVariable long id) {
         return commentService.showCommentToAd(id);
     }
 
+    /**
+     * Adds a comment to a specific advertisement.
+     *
+     * @param id the ID of the advertisement to which the comment will be added.
+     * @param comment the comment data, encapsulated in a {@link CommentDTO}.
+     * @return the ID of the newly created comment.
+     */
     @PostMapping("/{id}/comments")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @ApiOperation(value = "Add a comment to an advertisement", response = Long.class)
@@ -102,6 +152,12 @@ public class AdsController {
         return commentService.newComment(id, comment);
     }
 
+    /**
+     * Deletes a comment from a specific advertisement.
+     *
+     * @param adId the ID of the advertisement from which the comment will be deleted.
+     * @param commentId the ID of the comment to delete.
+     */
     @DeleteMapping("/{adId}/comments/{commentId}")
     @PreAuthorize("hasRole('ADMIN') or @commentService.isCommentOwner(authentication.principal.id, #commentId)")
     @ApiOperation(value = "Delete a comment from an advertisement")
@@ -110,6 +166,13 @@ public class AdsController {
         commentService.deleteComm(adId, commentId);
     }
 
+    /**
+     * Updates a comment on a specific advertisement.
+     *
+     * @param adId the ID of the advertisement on which the comment is located.
+     * @param commentId the ID of the comment to update.
+     * @param comment the updated comment data, encapsulated in a {@link CommentDTO}.
+     */
     @PatchMapping("/{adId}/comments/{commentId}")
     @PreAuthorize("hasRole('ADMIN') or @commentService.isCommentOwner(authentication.principal.id, #commentId)")
     @ApiOperation(value = "Update a comment on an advertisement")

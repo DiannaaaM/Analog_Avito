@@ -24,6 +24,15 @@ public class AvatarServiceImpl implements AvatarService {
     @Autowired
     private AvatarRepository avatarRepository;
 
+    /**
+     * Этот метод обрабатывает загрузку файла изображения и сохраняет его по указанному пути загрузки.
+     * Он генерирует уникальный идентификатор для файла изображения и копирует его по пути загрузки.
+     * Затем путь к изображению сохраняется в базе данных.
+     *
+     * @param file Объект MultipartFile, представляющий загруженный файл изображения.
+     * @return Объект AvatarEntity, содержащий сохраненный путь к изображению.
+     * @throws IOException Если во время обработки файла или операций с базой данных возникает ошибка.
+     */
     public AvatarEntity uploadImage(MultipartFile file) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
@@ -38,6 +47,15 @@ public class AvatarServiceImpl implements AvatarService {
         return avatarRepository.save(avatar);
     }
 
+    /**
+     * Этот метод извлекает данные изображения из указанного пути к изображению.
+     * Он извлекает объект AvatarEntity из базы данных по указанному идентификатору,
+     * а затем считывает данные изображения из пути к файлу.
+     *
+     * @param id Идентификатор объекта AvatarEntity, из которого нужно извлечь данные изображения.
+     * @return Массив байтов, содержащий данные изображения.
+     * @throws IOException Если во время обработки файла или операций с базой данных возникает ошибка.
+     */
     public byte[] getImageDataFromPath(Long id) throws IOException {
         Optional<AvatarEntity> avatar = avatarRepository.findById(id);
 
