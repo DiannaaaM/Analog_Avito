@@ -12,8 +12,9 @@ import ru.skypro.homework.dto.UserDTO;
 import ru.skypro.homework.mapper.EntityMapper;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.impl.UserServiceImpl;
+
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,19 +54,19 @@ public class UserServiceTest {
     @Test
     void getCurrentUser_ShouldReturnUserEntity() {
         UserEntity user = new UserEntity();
-        when(userRepository.findByUsername("testUser")).thenReturn(user);
+        when(userRepository.findByEmail("testUser@gma")).thenReturn( Optional.of( user ) );
 
-        UserEntity currentUser = userService.getCurrentUser();
+        Optional<UserEntity> currentUser = userService.getCurrentUser();
 
         assertNotNull(currentUser);
-        verify(userRepository).findByUsername("testUser");
+        verify(userRepository).findByEmail("testUser");
     }
 
     @Test
     void updateUserInfo_ShouldUpdateUser() {
         UserDTO updateDTO = new UserDTO();
         UserEntity user = new UserEntity();
-        when(userRepository.findByUsername("testUser")).thenReturn(user);
+        when(userRepository.findByEmail("testUser@gma")).thenReturn( Optional.of( user ) );
 
         long updatedUserId = userService.updateUserInfo(updateDTO);
 

@@ -22,6 +22,7 @@ import ru.skypro.homework.service.impl.AvatarServiceImpl;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -87,7 +88,7 @@ public class UserControllerTest {
         userDTO.setId(1L);
         userDTO.setUsername("testUser");
 
-        when(userService.getCurrentUser()).thenReturn(userEntity);
+        when(userService.getCurrentUser()).thenReturn( Optional.of( userEntity ) );
         when(mapper.userEntityToUserDTO(any(UserEntity.class))).thenReturn(userDTO);
 
         mockMvc.perform(get("/users/me")

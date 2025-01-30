@@ -55,7 +55,7 @@ public class ImageServiceTest {
     void deleteImage_ShouldDeleteImage() {
         long imageId = 1L;
         ImageEntity image = new ImageEntity();
-        when(imageRepository.findById(imageId)).thenReturn( image );
+        when(imageRepository.findById( (int) imageId )).thenReturn( Optional.of( image ) );
 
         imageService.deleteImage(imageId);
 

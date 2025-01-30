@@ -25,28 +25,16 @@ import java.util.List;
 @RequestMapping("/ads")
 @Api(tags = "Advertisement Management")
 public class AdsController {
-    @Autowired
-    private AdServiceImpl adService;
+    private final AdServiceImpl adService;
 
-    @Autowired
-    private CommentServiceImpl commentService;
+    private final CommentServiceImpl commentService;
 
-    @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    /**
-     * Retrieves the current authenticated user's ID.
-     *
-     * @return the ID of the current authenticated user.
-     * @throws RuntimeException if the user is not found or not authenticated.
-     */
-    private long getCurrentUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            UserEntity user = (UserEntity) authentication.getPrincipal();
-            return user.getId();
-        }
-        throw new RuntimeException("User not found");
+    public AdsController(AdServiceImpl adService, CommentServiceImpl commentService, UserServiceImpl userService) {
+        this.adService = adService;
+        this.commentService = commentService;
+        this.userService = userService;
     }
 
     /**

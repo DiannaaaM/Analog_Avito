@@ -14,6 +14,7 @@ import ru.skypro.homework.service.impl.AvatarServiceImpl;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +50,7 @@ public class AvatarServiceTest {
     void getImageDataFromPath_ShouldReturnImageData() throws IOException {
         AvatarEntity avatarEntity = new AvatarEntity();
         avatarEntity.setImagePath("src/test/resources/test.png");
-        when(avatarRepository.findById(1L)).thenReturn(avatarEntity);
+        when(avatarRepository.findById(1L)).thenReturn( Optional.of( avatarEntity ) );
 
         byte[] imageData = avatarService.getImageDataFromPath(1L);
 

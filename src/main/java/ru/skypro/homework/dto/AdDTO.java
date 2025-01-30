@@ -17,7 +17,7 @@ public class AdDTO {
     private String description;
 
     @ApiModelProperty(value = "Photo of the advertisement")
-    private MultipartFile photo;
+    private MultipartFile image;
 
     @ApiModelProperty(value = "Price of the advertisement", required = true)
     private Integer price;
@@ -31,11 +31,11 @@ public class AdDTO {
     public AdDTO() {
     }
 
-    public AdDTO(Long id, String title, String description, MultipartFile photo, Integer price, Long ownerId, String comments) {
+    public AdDTO(Long id, String title, String description, MultipartFile image, Integer price, Long ownerId, String comments) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.photo = photo;
+        this.image = image;
         this.price = price;
         this.ownerId = ownerId;
         this.comments = comments;
@@ -65,12 +65,12 @@ public class AdDTO {
         this.description = description;
     }
 
-    public MultipartFile getPhoto() {
-        return photo;
+    public MultipartFile getImage() {
+        return image;
     }
 
-    public void setPhoto(MultipartFile photo) {
-        this.photo = photo;
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 
     public Integer getPrice() {

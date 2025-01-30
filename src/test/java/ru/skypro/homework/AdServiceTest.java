@@ -18,6 +18,7 @@ import ru.skypro.homework.service.impl.AdServiceImpl;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,7 +67,7 @@ public class AdServiceTest {
         AdDTO adDTO = new AdDTO();
         AdEntity existingAd = new AdEntity();
         existingAd.setId(adId);
-        when(adRepository.findById(adId)).thenReturn(existingAd);
+        when(adRepository.findById(adId)).thenReturn( Optional.of(existingAd));
         when(adRepository.save(existingAd)).thenReturn(existingAd);
         when(mapper.adEntityToAdDTO(existingAd)).thenReturn(adDTO);
 

@@ -91,9 +91,9 @@ public class AdServiceImpl implements AdService {
         existingAd.get().setPrice(ad.getPrice());
         existingAd.get().setComments(ad.getComments());
 
-        if (ad.getPhoto() != null && !ad.getPhoto().isEmpty()) {
+        if (ad.getImage() != null && !ad.getImage().isEmpty()) {
             ImageEntity imageEntity = new ImageEntity();
-            imageEntity.setImagePath(uploadImage(ad.getPhoto()));
+            imageEntity.setImagePath(uploadImage(ad.getImage()));
             existingAd.get().getImages().add(imageEntity);
         }
 

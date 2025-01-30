@@ -20,14 +20,17 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
-    @Autowired
-    private EntityMapper mapper;
+    private final EntityMapper mapper;
 
-    @Autowired
-    private AvatarServiceImpl avatarService;
+    private final AvatarServiceImpl avatarService;
+
+    public UserController(UserServiceImpl userService, EntityMapper mapper, AvatarServiceImpl avatarService) {
+        this.userService = userService;
+        this.mapper = mapper;
+        this.avatarService = avatarService;
+    }
 
     /**
      * Sets a new password for the user.

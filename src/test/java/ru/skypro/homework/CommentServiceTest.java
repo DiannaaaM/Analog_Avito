@@ -44,7 +44,7 @@ public class CommentServiceTest {
         CommentDTO commentDTO = new CommentDTO();
         AdEntity adEntity = new AdEntity();
         CommentEntity newComment = new CommentEntity();
-        when(adRepository.findById(adId)).thenReturn(adEntity);
+        when(adRepository.findById(adId)).thenReturn( Optional.of( adEntity ) );
         when(mapper.сommentDTOToCommentEntity(commentDTO)).thenReturn(newComment);
         when(commentRepository.save(newComment)).thenReturn(newComment);
 
