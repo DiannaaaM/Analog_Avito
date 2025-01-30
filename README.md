@@ -5,7 +5,6 @@ __________________________________________
 - Spring Boot
 - Hibernate
 - PostgreSQL
-- База данных PostgreSQL
 - Lombok
 - MapStruct
 - Spring Security
