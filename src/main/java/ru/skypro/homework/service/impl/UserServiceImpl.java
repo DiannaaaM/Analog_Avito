@@ -33,6 +33,12 @@ public class UserServiceImpl implements UserService {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    /**
+     * Регистрирует нового пользователя с указанными данными.
+     *
+     * @param register DTO, содержащий регистрационные данные пользователя.
+     * @return Вновь созданный объект {@link UserEntity}.
+     */
     public UserEntity registration(RegisterDTO register) {
         UserEntity user = new UserEntity();
         user.setEmail(register.getEmail());
@@ -44,11 +50,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Получает текущего аутентифицированного пользователя.
+     *
+     * @return Необязательный параметр, содержащий текущего пользователя, если он найден, в противном случае — пустой необязательный параметр.
+     */
     public Optional<UserEntity> getCurrentUser() {
         String name = authentication().getName();
         return userRepository.findByFirstName(name);
     }
 
+    /**
+     * Обновляет информацию о пользователе с помощью предоставленных данных.
+     *
+     * @param update DTO, содержащий обновленные данные о пользователе.
+     * @return Идентификатор обновленного объекта {@link UserEntity}.
+     * @throws RuntimeException Если пользователь не найден.
+     */
     public long updateUserInfo(UserDTO update) {
         Optional<UserEntity> updatedUserOptional = userRepository.findByFirstName(authentication().getName());
         if (updatedUserOptional.isEmpty()) {
@@ -65,10 +83,22 @@ public class UserServiceImpl implements UserService {
         return updatedUser.getId();
     }
 
+    /**
+     * Обновляет изображение пользователя с помощью предоставленной сущности {@link AvatarEntity}.
+     *
+     * @param userId Идентификатор пользователя.
+     * @param avatar Сущность {@link AvatarEntity} для обновления изображения пользователя.
+     */
     public void updateUserImage(Long userId, AvatarEntity avatar) {
         userRepository.updateUserImage(avatar, userId);
     }
 
+    /**
+     * Получает все объявления, опубликованные текущим пользователем.
+     *
+     * @return Список {@link AdDTO}, представляющих объявления пользователя.
+     * @throws RuntimeException Если пользователь не найден.
+     */
     public List<AdDTO> getUserAds() {
         Optional<UserEntity> currentUserOptional = getCurrentUser();
         if (currentUserOptional.isEmpty()) {

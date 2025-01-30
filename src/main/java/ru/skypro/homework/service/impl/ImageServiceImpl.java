@@ -30,6 +30,13 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     private EntityMapper mapper;
 
+    /**
+     * Загружает изображение на сервер и сохраняет путь к нему в базе данных.
+     *
+     * @param file - объект MultipartFile, содержащий загружаемое изображение.
+     * @return объект ImageDTO, представляющий загруженное изображение.
+     * @throws IOException, если во время обработки файла возникает ошибка.
+     */
     public ImageDTO uploadImage(MultipartFile file) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
@@ -44,6 +51,13 @@ public class ImageServiceImpl implements ImageService {
         return mapper.imageEntityToImageDTO(imageRepository.save(image));
     }
 
+    /**
+     * Получает данные изображения по указанному пути.
+     *
+     * @param id Уникальный идентификатор изображения.
+     * @return Массив байтов, содержащий данные изображения.
+     * @throws IOException Если при чтении файла возникает ошибка.
+     */
     public byte[] getImageDataFromPath(Long id) throws IOException {
         Optional<ImageEntity> image = imageRepository.findById(Math.toIntExact(id));
 
@@ -51,6 +65,11 @@ public class ImageServiceImpl implements ImageService {
         return Files.readAllBytes(filePath);
     }
 
+    /**
+     * Удаляет изображение с указанным идентификатором с сервера и из базы данных.
+     *
+     * @param id - Уникальный идентификатор изображения.
+     */
     public void deleteImage(Long id) {
         Optional<ImageEntity> image = imageRepository.findById(Math.toIntExact(id));
 
@@ -63,9 +82,23 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    /**
+     * Извлекает список объектов {@link ImageDTO}, представляющих изображения, связанные с указанным идентификатором объявления.
+     *
+     * @param id - Уникальный идентификатор объявления.
+     * @return список объектов ImageDTO.
+     */
     public List<ImageDTO> getAdImages(Long id) {
         return mapper.imageEntitiesToImageDTOs(imageRepository.getImagesByAdId(id));
     }
+
+    /**
+     * Обновляет путь к изображению для указанного идентификатора изображения.
+     *
+     * @param imagePath Новый путь к изображению.
+     * @param imageId Уникальный идентификатор изображения.
+     * @param upload Объект MultipartFile, содержащий обновленное изображение.
+     */
     public void updateImage(String imagePath, Integer imageId, MultipartFile upload) {
         imageRepository.uploadImage(imagePath, imageId);
     }

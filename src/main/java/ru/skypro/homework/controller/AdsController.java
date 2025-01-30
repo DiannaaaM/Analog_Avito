@@ -38,9 +38,9 @@ public class AdsController {
     }
 
     /**
-     * Retrieves all advertisements.
+     * Извлекает все объявления.
      *
-     * @return a list of all advertisements as {@link AdDTO} objects.
+     * @return список всех объявлений в виде объектов {@link AdDTO}.
      */
     @GetMapping
     @ApiOperation(value = "Get all advertisements", response = AdEntity.class, responseContainer = "List")
@@ -49,10 +49,10 @@ public class AdsController {
     }
 
     /**
-     * Creates a new advertisement.
+     * Создает новое объявление.
      *
-     * @param ad the advertisement data to be created, encapsulated in an {@link AdDTO}.
-     * @return the created advertisement as an {@link AdDTO}.
+     * @param ad - данные рекламного объявления, которые должны быть созданы, заключены в {@link AdDTO}.
+     * @return созданное объявление в виде {@link AdDTO}.
      */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
@@ -62,10 +62,10 @@ public class AdsController {
     }
 
     /**
-     * Retrieves an advertisement by its ID.
+     * Извлекает объявление по его идентификатору.
      *
-     * @param id the ID of the advertisement to retrieve.
-     * @return the advertisement as an {@link AdDTO}.
+     * @param id - идентификатор извлекаемого объявления.
+     * @return объявление в виде {@link AdDTO}.
      */
     @GetMapping("/{id}")
     @ApiOperation(value = "Get advertisement by ID", response = AdDTO.class)
@@ -74,9 +74,9 @@ public class AdsController {
     }
 
     /**
-     * Deletes an advertisement by its ID.
+     * Удаляет объявление по ее идентификатору.
      *
-     * @param id the ID of the advertisement to delete.
+     * @param id - идентификатор объявления, которую нужно удалить.
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @userService.isAdOwner(authentication.principal.id, #id)")
@@ -86,12 +86,12 @@ public class AdsController {
     }
 
     /**
-     * Updates an advertisement by its ID.
+     * Обновляет объявление по его идентификатору.
      *
-     * @param id the ID of the advertisement to update.
-     * @param ad the updated advertisement data, encapsulated in an {@link AdDTO}.
-     * @return the updated advertisement as an {@link AdDTO}.
-     * @throws IOException if an I/O error occurs during the update process.
+     * @param id - идентификатор обновляемого объявления.
+     * @param ad - обновленные данные, заключенные в {@link AdDTO}.
+     * @return обновленное объявление в виде {@link AdDTO}.
+     * @throws IOException, если в процессе обновления возникает ошибка ввода-вывода.
      */
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @userService.isAdOwner(authentication.principal.id, #id)")
@@ -102,9 +102,9 @@ public class AdsController {
     }
 
     /**
-     * Retrieves the current user's advertisements.
+     * Получает объявления текущего пользователя.
      *
-     * @return a list of the current user's advertisements as {@link AdDTO} objects.
+     * @return список объявлений текущего пользователя в виде объектов {@link AdDTO}.
      */
     @GetMapping("/me")
     @ApiOperation(value = "Get current user's advertisements", response = AdEntity.class, responseContainer = "List")
@@ -114,10 +114,10 @@ public class AdsController {
     }
 
     /**
-     * Retrieves comments for a specific advertisement.
+     * Извлекает комментарии к конкретному объявлению.
      *
-     * @param id the ID of the advertisement for which to retrieve comments.
-     * @return a list of comments as {@link CommentDTO} objects.
+     * @param id - идентификатор объявления, по которому нужно получить комментарии.
+     * @return список комментариев в виде объектов {@link CommentDTO}.
      */
     @GetMapping("/{id}/comments")
     @ApiOperation(value = "Get comments for an advertisement", response = CommentEntity.class, responseContainer = "List")
@@ -126,11 +126,11 @@ public class AdsController {
     }
 
     /**
-     * Adds a comment to a specific advertisement.
+     * Добавляет комментарий к конкретному объявлению.
      *
-     * @param id the ID of the advertisement to which the comment will be added.
-     * @param comment the comment data, encapsulated in a {@link CommentDTO}.
-     * @return the ID of the newly created comment.
+     * @param id идентификатор объявления, к которому будет добавлен комментарий.
+     * @param comment данные комментария, заключенные в {@link CommentDTO}.
+     * @return идентификатор вновь созданного комментария.
      */
     @PostMapping("/{id}/comments")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -141,10 +141,10 @@ public class AdsController {
     }
 
     /**
-     * Deletes a comment from a specific advertisement.
+     * Удаляет комментарий к определенному объявлению.
      *
-     * @param adId the ID of the advertisement from which the comment will be deleted.
-     * @param commentId the ID of the comment to delete.
+     * @param - идентификатор объявления, из которой будет удален комментарий.
+     * @param - идентификатор комментария, который нужно удалить.
      */
     @DeleteMapping("/{adId}/comments/{commentId}")
     @PreAuthorize("hasRole('ADMIN') or @commentService.isCommentOwner(authentication.principal.id, #commentId)")
@@ -155,11 +155,11 @@ public class AdsController {
     }
 
     /**
-     * Updates a comment on a specific advertisement.
+     * Обновляет комментарий к конкретному объявлению.
      *
-     * @param adId the ID of the advertisement on which the comment is located.
-     * @param commentId the ID of the comment to update.
-     * @param comment the updated comment data, encapsulated in a {@link CommentDTO}.
+     * @param adId идентификатор объявления, к которому относится комментарий.
+     * @param commentId идентификатор комментария для обновления.
+     * @param comment обновленные данные комментария, заключенные в {@link CommentDTO}.
      */
     @PatchMapping("/{adId}/comments/{commentId}")
     @PreAuthorize("hasRole('ADMIN') or @commentService.isCommentOwner(authentication.principal.id, #commentId)")

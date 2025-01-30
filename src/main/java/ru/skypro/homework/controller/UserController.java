@@ -33,11 +33,11 @@ public class UserController {
     }
 
     /**
-     * Sets a new password for the user.
+     * Устанавливает новый пароль для пользователя.
      *
-     * @param password an UpdatePasswordDTO object containing the new password information
-     * @return a ResponseEntity containing a success message if the password meets the requirements,
-     *         or a bad request message if the password length is not between 8 and 16 characters
+     * @param password объект {@link UpdatePasswordDTO}, содержащий информацию о новом пароле
+     * @return объект ResponseEntity, содержащий сообщение об успешном выполнении, если пароль соответствует требованиям,
+     * или сообщение об ошибке, если длина пароля не составляет от 8 до 16 символов
      */
     @PostMapping("/set_password")
     public ResponseEntity<String> setPassword(@RequestBody UpdatePasswordDTO password) {
@@ -48,10 +48,10 @@ public class UserController {
     }
 
     /**
-     * Retrieves the information of the current user.
+     * Получает информацию о текущем пользователе.
      *
-     * @return a ResponseEntity containing the UserDTO of the current user if found,
-     *         or a status of NOT_FOUND if the user does not exist
+     * @return объект ResponseEntity, содержащий UserDTO текущего пользователя, если он найден,
+     * или статус NOT_FOUND, если пользователь не найден
      */
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getUserInfo() {
@@ -64,10 +64,10 @@ public class UserController {
     }
 
     /**
-     * Updates the information of the current user.
+     * Обновляет информацию о текущем пользователе.
      *
-     * @param updateUser a UserDTO object containing the updated user information
-     * @return a ResponseEntity containing the ID of the updated user
+     * @param updateUser объект UserDTO, содержащий обновленную информацию о пользователе
+     * @return объект ResponseEntity, содержащий идентификатор обновленного пользователя
      */
     @PatchMapping("/me")
     public ResponseEntity<Long> updateUserInfo(@RequestBody UserDTO updateUser) {
@@ -76,11 +76,10 @@ public class UserController {
     }
 
     /**
-     * Updates the user's avatar image.
+     * Обновляет изображение аватара пользователя.
      *
-     * @param image the MultipartFile containing the new image to be uploaded
-     * @return a ResponseEntity containing the ID of the uploaded avatar if successful,
-     *         or a status of INTERNAL_SERVER_ERROR if the upload fails
+     * @param image — многокомпонентный файл, содержащий новое изображение для загрузки
+     * @return — объект ResponseEntity, содержащий идентификатор загруженного аватара в случае успеха или статус INTERNAL_SERVER_ERROR в случае сбоя загрузки
      */
     @PatchMapping("/me/image")
     public ResponseEntity<Long> updateImage(@RequestParam MultipartFile image) {
@@ -93,12 +92,12 @@ public class UserController {
     }
 
     /**
-     * Uploads an image for a specific user.
+     * Загружает изображение для конкретного пользователя.
      *
-     * @param userId    the ID of the user for whom the image is being uploaded
-     * @param imageFile the image file to be uploaded
-     * @return a ResponseEntity containing a success message if the upload is successful,
-     *         or an error message if the upload fails
+     * @param userId    идентификатор пользователя, для которого загружается изображение
+     * @param imageFile загружаемый файл изображения
+     * @return объект ResponseEntity, содержащий сообщение об успешном выполнении, если загрузка прошла успешно,
+     * или сообщение об ошибке, если загрузка не удалась
      */
     @PostMapping("/{userId}/image")
     public ResponseEntity<String> uploadImage(@PathVariable Long userId, @RequestParam("imageFile") MultipartFile imageFile) {
